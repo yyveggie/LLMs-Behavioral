@@ -10,33 +10,44 @@
 
 ### 1.2 配置 LLM 服务商和 API Key
 
-只要服务商提供 OpenAI-compatible Chat Completions 接口，通常都可以通过 `configs/llm_configs.yaml` 接入。
+运行实验只需要理解两个文件：
 
-先在 `configs/run_config.yaml` 中选择当前模型配置：
+- `configs/llm_configs.yaml`：配置服务商、模型名、API 地址，以及 API Key 对应的环境变量名称
+- `.env`：只保存在你本地，填写真实 API Key，不上传 GitHub
+
+`.env.example` 只是模板文件，方便你复制出本地 `.env`，一般不需要直接修改。
+
+先在 `configs/llm_configs.yaml` 中确认或新增服务商配置：
 
 ```yaml
-active_llm: moonshot  # 可改为 openai / deepseek / qwen / siliconflow / 自定义的名称
+llms:
+  - name: moonshot
+    base_url: https://api.moonshot.cn/v1
+    api_key: ${MOONSHOT_API_KEY}
+    model: kimi-k2-turbo-preview
+    max_concurrency: 100
+    timeout: 60
 ```
 
-然后根据所选服务商设置对应环境变量。例如：
+然后在 `configs/run_config.yaml` 中选择当前服务商：
 
-```bash
-export MOONSHOT_API_KEY="你的 Moonshot API Key"
-export OPENAI_API_KEY="你的 OpenAI API Key"
-export DEEPSEEK_API_KEY="你的 DeepSeek API Key"
-export DASHSCOPE_API_KEY="你的 DashScope API Key"
-export SILICONFLOW_API_KEY="你的 SiliconFlow API Key"
+```yaml
+active_llm: moonshot
 ```
 
-只需要设置你实际使用的那个服务商的 Key，不需要全部设置。
-
-也可以复制 `.env.example` 为 `.env`，把 Key 写在本地 `.env` 文件里：
+最后把真实 API Key 写进本地 `.env`：
 
 ```bash
 cp .env.example .env
 ```
 
-runner 会自动读取项目根目录下的 `.env`。真实 `.env` 已经被 `.gitignore` 忽略，不要把真实 API Key 上传到 GitHub。
+打开 `.env`，填写你实际使用的服务商 Key。例如使用 `moonshot` 时：
+
+```text
+MOONSHOT_API_KEY=你的真实 API Key
+```
+
+只需要填写你实际使用的那个 Key，不需要全部填写。runner 会自动读取项目根目录下的 `.env`。真实 `.env` 已经被 `.gitignore` 忽略，不要把真实 API Key 上传到 GitHub。
 
 也可以不改 `run_config.yaml`，直接在运行命令里用 `--llm` 临时切换模型配置：
 
@@ -59,30 +70,6 @@ python scripts/run_configured_experiments.py --config configs/run_config.yaml --
 ```bash
 export MY_PROVIDER_API_KEY="你的 API Key"
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --llm my_provider --experiment dictator
-```
-
-如果只是你自己本地运行使用，请把配置写到 `configs/llm_configs.local.yaml`，不要写入可提交的主配置文件。该文件会被 `.gitignore` 忽略，并会在运行时自动合并到 `configs/llm_configs.yaml`：
-
-```yaml
-llms:
-  - name: kimi
-    base_url: https://api.moonshot.cn/v1
-    api_key: ${KIMI_API_KEY}
-    model: kimi-k2-turbo-preview
-    max_concurrency: 50
-    timeout: 60
-```
-
-然后把真实 Key 放到本地 `.env`：
-
-```bash
-KIMI_API_KEY="你的真实 API Key"
-```
-
-运行时使用：
-
-```bash
-python scripts/run_configured_experiments.py --config configs/run_config.yaml --llm kimi --experiment dictator
 ```
 
 ## 2. 按配置运行所有启用实验
