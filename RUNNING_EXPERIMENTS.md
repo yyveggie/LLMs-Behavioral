@@ -381,34 +381,103 @@ python scripts/run_configured_experiments.py --config configs/run_config.yaml --
 
 下面这些命令是本仓库模块化 runner 中已经实现的可运行入口，主要用于复现原 notebook 中的变体、补充解释型提示、职业角色设定或不同回合设定。这里的实验名是代码入口名称，不代表原论文中的正式命名。
 
-Trust explained 变体，要求模型在作出选择后解释理由：
+#### 4.32.1 Trust investor explained
 
 ```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment trust_investor_explained
+```
+
+信任博弈投资者版本。模型作为 Investor 决定从 100 美元中投资多少给 Banker，并要求模型解释自己的投资理由。
+
+#### 4.32.2 Trust banker explained
+
+```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment trust_banker_10_explained
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment trust_banker_50_explained
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment trust_banker_100_explained
 ```
 
-Public Goods 变体，包括 `loss` 命名兼容入口和职业角色设定入口：
+信任博弈 Banker 版本。模型分别面对 Investor 投入 10、50、100 美元的情形，决定返还多少，并解释自己的返还理由。
+
+#### 4.32.3 Public Goods loss
 
 ```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment public_goods_loss
+```
+
+公共品博弈的 `loss` 命名兼容入口。该入口使用配置中的 `other_contributions: [0, 0]`，对应旧记录中其他玩家总贡献较低的运行设定。
+
+#### 4.32.4 Public Goods occupations described
+
+```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment public_goods_occupations_described
+```
+
+公共品博弈职业角色设定版。模型会在不同职业身份的 system message 下运行，用于比较职业描述对贡献行为的影响。
+
+#### 4.32.5 Public Goods loss occupations described
+
+```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment public_goods_loss_occupations_described
 ```
 
-Prisoner's Dilemma 变体，包括不同回合/对手行为序列和职业角色设定入口：
+公共品博弈 `loss` 设定和职业角色设定的组合版本。既使用低其他玩家贡献设定，也在不同职业身份下运行。
+
+#### 4.32.6 Prisoner's Dilemma five rounds pull
 
 ```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment prisoners_dilemma_five_rounds_pull
+```
+
+Push-Pull 卡牌博弈五轮版本。对手行为序列为前两轮 `Pull`、后两轮 `Push`，观察模型在多轮反馈后的选择变化。
+
+#### 4.32.7 Prisoner's Dilemma two rounds push
+
+```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment prisoners_dilemma_two_rounds_push
+```
+
+Push-Pull 卡牌博弈两轮版本。第一轮后给定对手选择 `Push`，观察模型第二轮如何回应。
+
+#### 4.32.8 Prisoner's Dilemma two rounds pull
+
+```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment prisoners_dilemma_two_rounds_pull
+```
+
+Push-Pull 卡牌博弈两轮版本。第一轮后给定对手选择 `Pull`，观察模型第二轮如何回应。
+
+#### 4.32.9 Prisoner's Dilemma occupations described
+
+```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment prisoners_dilemma_occupations_described
+```
+
+Push-Pull 卡牌博弈职业角色设定版。模型会在不同职业身份的 system message 下运行，用于比较职业描述对合作/背叛行为的影响。
+
+#### 4.32.10 Prisoner's Dilemma five rounds pull occupations described
+
+```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment prisoners_dilemma_five_rounds_pull_occupations_described
+```
+
+Push-Pull 卡牌博弈五轮版本与职业角色设定的组合版本。对手行为序列为前两轮 `Pull`、后两轮 `Push`，并在不同职业身份下运行。
+
+#### 4.32.11 Prisoner's Dilemma two rounds push occupations described
+
+```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment prisoners_dilemma_two_rounds_push_occupations_described
+```
+
+Push-Pull 卡牌博弈两轮 `Push` 反馈版本与职业角色设定的组合版本。
+
+#### 4.32.12 Prisoner's Dilemma two rounds pull occupations described
+
+```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment prisoners_dilemma_two_rounds_pull_occupations_described
 ```
+
+Push-Pull 卡牌博弈两轮 `Pull` 反馈版本与职业角色设定的组合版本。
 
 ## 5. 输出文件位置
 
