@@ -20,7 +20,7 @@ Please read that file first if you want to run the modular Python experiment scr
 
 ## LLM Provider Configuration
 
-This project is not limited to Moonshot. It supports OpenAI-compatible LLM providers through `configs/llm_configs.yaml`.
+This project supports OpenAI-compatible LLM providers through `configs/llm_configs.yaml`.
 
 Built-in example provider names include:
 
@@ -156,7 +156,7 @@ RUNNING_EXPERIMENTS.md
 
 ## LLM 服务商配置
 
-本项目不限定只能使用 Moonshot。只要服务商提供 OpenAI-compatible Chat Completions 接口，通常都可以通过 `configs/llm_configs.yaml` 接入。
+只要服务商提供 OpenAI-compatible Chat Completions 接口，通常都可以通过 `configs/llm_configs.yaml` 接入。
 
 当前内置示例配置包括：
 
