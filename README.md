@@ -1,5 +1,9 @@
 # ChatGPT Behavioral Experiment Reproduction
 
+Language: [English](#english) | [中文](#中文)
+
+<a id="english"></a>
+
 This repository is a modified and modularized reproduction project based on the original work by **Yutong Xie** and collaborators on behavioral experiments with AI chatbots.
 
 The goal of this repository is to make the original notebook-based experiment workflow easier to run, configure, debug, and extend with different LLM providers and model variants.
@@ -131,6 +135,8 @@ RUNNING_EXPERIMENTS.md
 ```
 
 ---
+
+<a id="中文"></a>
 
 # 中文说明
 
