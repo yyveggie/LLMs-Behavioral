@@ -6,19 +6,9 @@
 
 ### 1.1 进入项目根目录
 
-在终端中确保当前位置是项目根目录：
+在终端中确保当前位置是项目根目录
 
-```text
-/Users/mushroom/Desktop/ChatGPTBehavioral
-```
-
-### 1.2 激活 conda 环境
-
-```bash
-conda activate cep
-```
-
-### 1.3 配置 LLM 服务商和 API Key
+### 1.2 配置 LLM 服务商和 API Key
 
 只要服务商提供 OpenAI-compatible Chat Completions 接口，通常都可以通过 `configs/llm_configs.yaml` 接入。
 
