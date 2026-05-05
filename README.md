@@ -184,8 +184,6 @@ python scripts/run_configured_experiments.py --config configs/run_config.yaml --
 api_key: 你的真实 API Key
 ```
 
-不要把真实 API Key 提交到 GitHub。公开示例里可以把 `api_key` 留空。
-
 ## 原作者与项目来源声明
 
 本项目基于以下研究及其原始代码/材料修改而来：

@@ -27,8 +27,6 @@ llms:
     timeout: 60
 ```
 
-如果要上传到 GitHub，请不要提交真实 API Key；可以把 `api_key` 留空，或只在本地被忽略的配置文件中填写。
-
 然后在 `configs/run_config.yaml` 中选择当前服务商：
 
 ```yaml
@@ -379,9 +377,11 @@ python scripts/run_configured_experiments.py --config configs/run_config.yaml --
 
 模型在多轮中选择 `Push` 或 `Pull`，用于观察合作/背叛行为。
 
-### 4.32 本轮新增变体命令
+### 4.32 其他已实现的实验变体命令
 
-Trust explained 变体：
+下面这些命令是本仓库模块化 runner 中已经实现的可运行入口，主要用于复现原 notebook 中的变体、补充解释型提示、职业角色设定或不同回合设定。这里的实验名是代码入口名称，不代表原论文中的正式命名。
+
+Trust explained 变体，要求模型在作出选择后解释理由：
 
 ```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment trust_investor_explained
@@ -390,7 +390,7 @@ python scripts/run_configured_experiments.py --config configs/run_config.yaml --
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment trust_banker_100_explained
 ```
 
-Public Goods 变体：
+Public Goods 变体，包括 `loss` 命名兼容入口和职业角色设定入口：
 
 ```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment public_goods_loss
@@ -398,7 +398,7 @@ python scripts/run_configured_experiments.py --config configs/run_config.yaml --
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment public_goods_loss_occupations_described
 ```
 
-Prisoner's Dilemma 变体：
+Prisoner's Dilemma 变体，包括不同回合/对手行为序列和职业角色设定入口：
 
 ```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment prisoners_dilemma_five_rounds_pull
