@@ -126,7 +126,7 @@ Before running experiments, make sure to:
 - **Activate the correct Python/conda environment**.
 - **Set the required API key environment variables**.
 - **Check `configs/run_config.yaml` for enabled experiments and output paths**.
-- **Use `python`, not `python3`, if your machine has a separate Homebrew/system Python**.
+- **Make sure the Python command you use has the required dependencies installed**.
 
 For details, see:
 
@@ -262,7 +262,7 @@ Copyright (c) 2023 Yutong Xie
 - **已经激活正确的 Python/conda 环境**。
 - **已经设置所需的 API Key 环境变量**。
 - **已经检查 `configs/run_config.yaml` 中启用的实验和输出路径**。
-- **如果你的机器上 `python3` 指向系统或 Homebrew Python，请使用 `python` 而不是 `python3`**。
+- **确认运行命令使用的 Python 环境已经安装所需依赖**。
 
 更多细节请查看：
 

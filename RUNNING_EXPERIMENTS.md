@@ -71,20 +71,21 @@ export MY_PROVIDER_API_KEY="你的 API Key"
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --llm my_provider --experiment dictator
 ```
 
-### 1.4 使用 `python`，不要用 `python3`
+### 1.4 使用正确的 Python 环境
 
-这台机器上 `python3` 指向 Homebrew Python，不是 conda 环境里的 Python，可能会出现 `ModuleNotFoundError: No module named 'openai'`。
+请确认当前命令使用的是已经安装项目依赖的 Python 环境。如果出现 `ModuleNotFoundError: No module named 'openai'`，通常说明当前 Python 环境没有安装所需依赖，或没有正确激活 conda/venv 环境。
 
-正确方式：
+运行命令示例：
 
 ```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment dictator
 ```
 
-不要这样运行：
+你可以用下面的命令检查当前 Python 路径：
 
 ```bash
-python3 scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment dictator
+which python
+python -m pip show openai
 ```
 
 ## 2. 按配置运行所有启用实验
