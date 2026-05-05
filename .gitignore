@@ -123,7 +123,6 @@ celerybeat.pid
 # Environments
 .env
 .env.*
-!.env.example
 configs/*.local.yaml
 .venv
 env/

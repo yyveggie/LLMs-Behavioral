@@ -10,24 +10,24 @@
 
 ### 1.2 配置 LLM 服务商和 API Key
 
-运行实验只需要理解两个文件：
+运行实验主要改两个地方：
 
-- `configs/llm_configs.yaml`：配置服务商、模型名、API 地址，以及 API Key 对应的环境变量名称
-- `.env`：只保存在你本地，填写真实 API Key，不上传 GitHub
+- `configs/llm_configs.yaml`：配置服务商、模型名、API 地址和 API Key
+- `configs/run_config.yaml`：选择当前使用哪个服务商配置
 
-`.env.example` 只是模板文件，方便你复制出本地 `.env`，一般不需要直接修改。
-
-先在 `configs/llm_configs.yaml` 中确认或新增服务商配置：
+先在 `configs/llm_configs.yaml` 中确认或新增服务商配置。本地运行时，可以直接把自己的 API Key 填到 `api_key`：
 
 ```yaml
 llms:
   - name: moonshot
     base_url: https://api.moonshot.cn/v1
-    api_key: ${MOONSHOT_API_KEY}
+    api_key: 你的真实 API Key
     model: kimi-k2-turbo-preview
     max_concurrency: 100
     timeout: 60
 ```
+
+如果要上传到 GitHub，请不要提交真实 API Key；可以把 `api_key` 留空，或只在本地被忽略的配置文件中填写。
 
 然后在 `configs/run_config.yaml` 中选择当前服务商：
 
@@ -35,32 +35,18 @@ llms:
 active_llm: moonshot
 ```
 
-最后把真实 API Key 写进本地 `.env`：
-
-```bash
-cp .env.example .env
-```
-
-打开 `.env`，填写你实际使用的服务商 Key。例如使用 `moonshot` 时：
-
-```text
-MOONSHOT_API_KEY=你的真实 API Key
-```
-
-只需要填写你实际使用的那个 Key，不需要全部填写。runner 会自动读取项目根目录下的 `.env`。真实 `.env` 已经被 `.gitignore` 忽略，不要把真实 API Key 上传到 GitHub。
-
 也可以不改 `run_config.yaml`，直接在运行命令里用 `--llm` 临时切换模型配置：
 
 ```bash
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --llm deepseek --experiment dictator
 ```
 
-如果要新增可以公开共享的服务商示例，请在 `configs/llm_configs.yaml` 里添加一项，并使用环境变量占位符：
+如果要新增服务商，请在 `configs/llm_configs.yaml` 里添加一项：
 
 ```yaml
 - name: my_provider
   base_url: https://你的服务商兼容接口/v1
-  api_key: ${MY_PROVIDER_API_KEY}
+  api_key: 你的真实 API Key
   model: your-model-name
   timeout: 60
 ```
@@ -68,7 +54,6 @@ python scripts/run_configured_experiments.py --config configs/run_config.yaml --
 然后运行：
 
 ```bash
-export MY_PROVIDER_API_KEY="你的 API Key"
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --llm my_provider --experiment dictator
 ```
 
@@ -508,13 +493,13 @@ python scripts/run_configured_experiments.py --config configs/run_config.yaml
 - `qwen`
 - `siliconflow`
 
-这些配置都使用环境变量读取 API Key，不要把真实 Key 写进配置文件：
+这些配置的 `api_key` 字段可以直接填写对应服务商的 API Key。公开上传前请确认没有提交真实 Key：
 
 ```yaml
 llms:
   - name: deepseek
     base_url: https://api.deepseek.com/v1
-    api_key: ${DEEPSEEK_API_KEY}
+    api_key: 你的真实 API Key
     model: deepseek-chat
     timeout: 60
 ```
@@ -523,7 +508,7 @@ llms:
 
 - `name`：你运行时传给 `--llm` 的名称
 - `base_url`：服务商的 OpenAI-compatible API 地址
-- `api_key`：环境变量占位符
+- `api_key`：服务商 API Key
 - `model`：服务商支持的模型名
 - `timeout`：单次请求超时时间
 

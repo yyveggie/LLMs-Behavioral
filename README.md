@@ -42,13 +42,13 @@ Or override it from the command line:
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --llm deepseek --experiment dictator
 ```
 
-Provider and model settings are configured in `configs/llm_configs.yaml`. Real API keys should not be written into that file. Instead, copy `.env.example` to a local `.env` file and fill in only the keys you use:
+Provider, model, API endpoint, and `api_key` are configured in `configs/llm_configs.yaml`:
 
-```bash
-cp .env.example .env
+```yaml
+api_key: your-api-key
 ```
 
-`.env.example` is only a template. Do not commit your real `.env` file or real API keys.
+Do not commit real API keys to GitHub. Public examples should leave `api_key` empty.
 
 ## Attribution
 
@@ -178,13 +178,13 @@ active_llm: deepseek
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --llm deepseek --experiment dictator
 ```
 
-服务商和模型配置写在 `configs/llm_configs.yaml`。真实 API Key 不要写进这个配置文件，而是复制 `.env.example` 为本地 `.env`，然后只填写你实际使用的 Key：
+服务商、模型、API 地址和 `api_key` 都写在 `configs/llm_configs.yaml`：
 
-```bash
-cp .env.example .env
+```yaml
+api_key: 你的真实 API Key
 ```
 
-`.env.example` 只是模板文件，不需要直接修改。不要提交真实的 `.env` 文件或真实 API Key。
+不要把真实 API Key 提交到 GitHub。公开示例里可以把 `api_key` 留空。
 
 ## 原作者与项目来源声明
 
