@@ -140,8 +140,26 @@ def load_env_file(path=".env"):
             os.environ.setdefault(key, value)
 
 
+def merge_llm_configs(base_config, local_config):
+    merged = dict(base_config or {})
+    llms_by_name = {
+        llm.get("name"): dict(llm)
+        for llm in (merged.get("llms") or [])
+        if llm.get("name")
+    }
+    for llm in (local_config or {}).get("llms", []) or []:
+        name = llm.get("name")
+        if name:
+            llms_by_name[name] = dict(llm)
+    merged["llms"] = list(llms_by_name.values())
+    return merged
+
+
 def load_llm_config(path, active_llm):
     config = load_yaml(path)
+    local_path = Path(path).with_name(f"{Path(path).stem}.local{Path(path).suffix}")
+    if local_path.exists():
+        config = merge_llm_configs(config, load_yaml(local_path))
     llms = config.get("llms", [])
     for llm in llms:
         for key, value in list(llm.items()):

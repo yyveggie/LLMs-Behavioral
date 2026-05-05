@@ -44,7 +44,7 @@ runner 会自动读取项目根目录下的 `.env`。真实 `.env` 已经被 `.g
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --llm deepseek --experiment dictator
 ```
 
-如果要新增服务商，请在 `configs/llm_configs.yaml` 里添加一项：
+如果要新增可以公开共享的服务商示例，请在 `configs/llm_configs.yaml` 里添加一项，并使用环境变量占位符：
 
 ```yaml
 - name: my_provider
@@ -59,6 +59,30 @@ python scripts/run_configured_experiments.py --config configs/run_config.yaml --
 ```bash
 export MY_PROVIDER_API_KEY="你的 API Key"
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --llm my_provider --experiment dictator
+```
+
+如果只是你自己本地运行使用，请把配置写到 `configs/llm_configs.local.yaml`，不要写入可提交的主配置文件。该文件会被 `.gitignore` 忽略，并会在运行时自动合并到 `configs/llm_configs.yaml`：
+
+```yaml
+llms:
+  - name: kimi
+    base_url: https://api.moonshot.cn/v1
+    api_key: ${KIMI_API_KEY}
+    model: kimi-k2-turbo-preview
+    max_concurrency: 50
+    timeout: 60
+```
+
+然后把真实 Key 放到本地 `.env`：
+
+```bash
+KIMI_API_KEY="你的真实 API Key"
+```
+
+运行时使用：
+
+```bash
+python scripts/run_configured_experiments.py --config configs/run_config.yaml --llm kimi --experiment dictator
 ```
 
 ## 2. 按配置运行所有启用实验
