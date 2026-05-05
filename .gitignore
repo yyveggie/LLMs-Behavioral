@@ -124,6 +124,7 @@ celerybeat.pid
 .env
 .env.*
 configs/*.local.yaml
+records_new/
 .venv
 env/
 venv/
