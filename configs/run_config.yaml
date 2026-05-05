@@ -1,0 +1,248 @@
+active_llm: moonshot  # 当前使用的模型配置名称，对应 llm_configs.yaml 里的 name；可改为 openai/deepseek/qwen/siliconflow 等
+force_active_llm: true  # 保留兼容旧 notebook 配置；Python runner 会始终使用 active_llm 或命令行 --llm
+llm_config_path: configs/llm_configs.yaml  # LLM API 配置文件路径
+results_dir: null  # 实验结果保存目录；null 时自动使用 records_new/<active_llm>
+
+run:
+  save_metadata: true  # 是否在结果 JSON 中保存模型、实验和配置元信息
+  print_except: true  # 运行出错时是否打印错误信息
+  default_n_instances: 30  # 默认重复实验次数
+  max_retries: 3  # 单个样本或题目失败时最多重试次数，避免无限卡住
+
+experiments:
+  # 大五人格测试：测量模型在开放性、尽责性、外向性、宜人性、神经质五个维度上的人格倾向
+  bigfive:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 独裁者博弈：模型决定如何在自己和另一名玩家之间分配 100 美元
+  dictator:
+    enabled: true  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 独裁者博弈-要求解释：模型在分配 100 美元后解释自己的选择，对应旧日志中的 explained / w_ex
+  dictator_explained:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 独裁者博弈-要求解释的旧命名兼容项：和 dictator_explained 使用相同提示词
+  dictator_w_ex:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 独裁者博弈-不要求解释的旧命名兼容项：和基础 dictator 使用相同提示词
+  dictator_wo_ex:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 独裁者博弈-被主持人见证：提示词中加入 game host hands you $100
+  dictator_witnessed:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 独裁者博弈-对方为女性玩家：测试对方性别描述是否影响分配
+  dictator_paired_female:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 独裁者博弈-对方为男性玩家：测试对方性别描述是否影响分配
+  dictator_paired_male:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 独裁者博弈-职业角色设定：分别让模型扮演多个职业并运行基础独裁者博弈
+  dictator_occupations_described:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 每个职业重复运行次数；总调用量约为 职业数 * n_instances * 2 轮对话
+
+  # 最后通牒博弈-提议者：模型作为 Proposer，提出给 Responder 分多少钱
+  ultimatum_proposer:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 最后通牒博弈-提议者，对方为女性玩家
+  ultimatum_proposer_paired_female:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 最后通牒博弈-提议者，对方为男性玩家
+  ultimatum_proposer_paired_male:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 最后通牒博弈-提议者，职业角色设定版
+  ultimatum_proposer_occupations_described:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 每个职业重复运行次数
+
+  # 最后通牒博弈-回应者：模型作为 Responder，回答最低接受多少钱
+  ultimatum_responder:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 最后通牒博弈-回应者，对方为女性玩家
+  ultimatum_responder_paired_female:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 最后通牒博弈-回应者，对方为男性玩家
+  ultimatum_responder_paired_male:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 最后通牒博弈-回应者，对方为 chatbot
+  ultimatum_responder_paired_chatbot:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 最后通牒博弈-回应者，职业角色设定版
+  ultimatum_responder_occupations_described:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 每个职业重复运行次数
+
+  # 信任博弈-投资者：模型作为 Investor，决定把 100 美元中的多少交给 Banker 投资
+  trust_investor:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 信任博弈-投资者，要求解释选择
+  trust_investor_explained:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 信任博弈-投资者，职业角色设定版
+  trust_investor_occupations_described:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 每个职业重复运行次数
+
+  # 信任博弈-银行家，投资额为 10 美元：模型决定从 30 美元中返还给 Investor 多少
+  trust_banker_10:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 信任博弈-银行家，投资额为 10 美元，要求解释选择
+  trust_banker_10_explained:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 信任博弈-银行家，投资额为 10 美元，职业角色设定版
+  trust_banker_10_occupations_described:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 每个职业重复运行次数
+
+  # 信任博弈-银行家，投资额为 50 美元：模型决定从 150 美元中返还给 Investor 多少
+  trust_banker_50:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 信任博弈-银行家，投资额为 50 美元，要求解释选择
+  trust_banker_50_explained:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 信任博弈-银行家，投资额为 50 美元，职业角色设定版
+  trust_banker_50_occupations_described:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 每个职业重复运行次数
+
+  # 信任博弈-银行家，投资额为 100 美元：模型决定从 300 美元中返还给 Investor 多少
+  trust_banker_100:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 信任博弈-银行家，投资额为 100 美元，要求解释选择
+  trust_banker_100_explained:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 信任博弈-银行家，投资额为 100 美元，职业角色设定版
+  trust_banker_100_occupations_described:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 每个职业重复运行次数
+
+  # 炸弹风险游戏：模型在 100 个盒子中选择打开多少个，收益和踩雷风险之间权衡
+  bomb_risk:
+    enabled: false  # 是否运行该实验
+    n_instances: 80  # 重复运行次数；原实验通常需要更多样本覆盖不同反馈路径
+    only_first: false  # true 表示只跑第一轮选择，false 表示继续多轮反馈实验
+
+  # Holt-Laury 风险偏好测试：模型在 10 组 A/B 彩票选项中选择，用于测量风险偏好
+  holt_laury:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # Beauty Contest 选美/猜数博弈：模型与 4 个玩家猜 0-100 数字，目标接近平均数的 2/3
+  beauty_contest:
+    enabled: false  # 是否运行该实验
+    n_instances: 80  # 重复运行次数；原实验通常需要更多样本覆盖不同反馈路径
+
+  # 公共品博弈：模型决定每轮从 20 美元中贡献多少给公共项目，并回答收益计算
+  public_goods:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+    explicit: false  # 是否在收益问题中显式提供其他玩家平均收益
+    accept_wrong_payoff: true  # 是否接受模型算错收益但仍保留该条记录
+
+  # 公共品博弈-loss 文件名兼容版：保留原作者 loss 日志命名对应的可运行入口
+  public_goods_loss:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+    explicit: false  # 是否在收益问题中显式提供其他玩家平均收益
+    accept_wrong_payoff: true  # 是否接受模型算错收益但仍保留该条记录
+    other_contributions: [0, 0]  # 第 1、2 轮中其他三名玩家总贡献；原 loss 日志对应为 0,0
+
+  # 公共品博弈-职业角色设定版
+  public_goods_occupations_described:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 每个职业重复运行次数
+    explicit: false  # 是否在收益问题中显式提供其他玩家平均收益
+    accept_wrong_payoff: true  # 是否接受模型算错收益但仍保留该条记录
+    other_contributions: [0, 0]  # 第 1、2 轮中其他三名玩家总贡献
+
+  # 公共品博弈-loss + 职业角色设定版
+  public_goods_loss_occupations_described:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 每个职业重复运行次数
+    explicit: false  # 是否在收益问题中显式提供其他玩家平均收益
+    accept_wrong_payoff: true  # 是否接受模型算错收益但仍保留该条记录
+    other_contributions: [0, 0]  # 第 1、2 轮中其他三名玩家总贡献；原 loss 日志对应为 0,0
+
+  # 囚徒困境/Push-Pull 卡牌博弈：模型在多轮中选择 Push 或 Pull，观察合作/背叛行为
+  prisoners_dilemma:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 囚徒困境-五轮，对方前两轮 Pull、后两轮 Push
+  prisoners_dilemma_five_rounds_pull:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 囚徒困境-两轮，对方第一轮 Push
+  prisoners_dilemma_two_rounds_push:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 囚徒困境-两轮，对方第一轮 Pull
+  prisoners_dilemma_two_rounds_pull:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 重复运行次数
+
+  # 囚徒困境-职业角色设定版
+  prisoners_dilemma_occupations_described:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 每个职业重复运行次数
+
+  # 囚徒困境-五轮 + 职业角色设定版
+  prisoners_dilemma_five_rounds_pull_occupations_described:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 每个职业重复运行次数
+
+  # 囚徒困境-两轮，对方第一轮 Push + 职业角色设定版
+  prisoners_dilemma_two_rounds_push_occupations_described:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 每个职业重复运行次数
+
+  # 囚徒困境-两轮，对方第一轮 Pull + 职业角色设定版
+  prisoners_dilemma_two_rounds_pull_occupations_described:
+    enabled: false  # 是否运行该实验
+    n_instances: 30  # 每个职业重复运行次数

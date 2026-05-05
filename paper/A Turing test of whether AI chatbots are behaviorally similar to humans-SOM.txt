@@ -1,0 +1,1421 @@
+Supporting Information for2
+A Turing Test of Whether AI Chatbots Are Behaviorally Similar to Humans3
+Qiaozhu Mei, Yutong Xie, Walter Yuan, and Matthew O. Jackson4
+Corresponding Authors: Qiaozhu Mei and Matthew O. Jackson.5
+E-mail: qmei@umich.edu, jacksonm@stanford.edu6
+This PDF file includes:7
+Supporting text8
+Figs. S1 to S89
+Tables S1 to S310
+SI References11
+Supporting Information Text12
+1. Method13
+A. Collecting Chatbot Responses. We ran the interaction sessions with ChatGPT using the official API provided by OpenAI∗.14
+In the main paper, “ChatGPT-4” refers to the model gpt-4-0314 (snapshot of gpt-4 from March 14th 2023), and “ChatGPT-3”15
+refers to the model gpt-3.5-turbo-0301 (snapshot of gpt-3.5-turbo from March 1st 2023)†. We also tested the subscription-16
+based ChatGPT Web version (Plus) and the freely available Web version (Free), retrieved in February 2023 through a third-party17
+open source package revChatGPT‡.18
+To avoid introducing confounders, we acquire the models’ responses through the Chat Completion API§ with default19
+parameters (sampling temperature as 1, number of chat completion choices as 1, and maximum number of tokens as infinity)20
+and default system prompt “You are a helpful assistant.” as suggested by the official guide¶ unless otherwise specified21
+(e.g., see Sections A.1 and A.3).22
+Different snapshots of even the same chatbot version (e.g., ChatGPT-3), particularly the Web versions, can respond23
+differently to the same query, and occasionally do not respond to queries. To mitigate this issue, it is advised to utilize the API24
+versions or the OpenAI Platform Playground and specify the exact snapshot for testing a chatbot‖. Valid actions rendered by25
+the models are initially extracted from the AIs’ responses using regular expressions or the gpt-3.5-turbo API. Subsequently,26
+these extracted decisions undergo a manual verification process to ensure accuracy and relevance. Invalid responses are excluded27
+from our analysis. More details can be found in the code and data repository: https://github.com/yutxie/ChatGPT-Behavioral,28
+retrieved 12/29/2023.29
+A.1. OCEAN Big Five Test. The five-factor model (FFM), also known as the Big Five personality traits or the OCEAN model,30
+was conceptualized in the 1980s and has been developed and refined over the past five decades. This model represents a31
+comprehensive structure of traits that characterize individuals’ personalities (1–4). Each factor is defined by a cluster of32
+intercorrelated traits known as facets. The five factors and their respective facets are, with descriptions following (3):33
+Openness to experience: People with high scores in this trait are usually intellectual, imaginative, sensitive, and34
+open-minded. Conversely, those with low scores are typically practical, less sensitive, and more traditional.35
+Conscientiousness: Those who rank high in this dimension are generally careful, meticulous, responsible, organized, and36
+principled. On the other hand, individuals with low scores in this trait often appear irresponsible, disorganized, and37
+lacking in principles.38
+Extraversion: High scorers in Extraversion are often sociable, talkative, assertive, and energetic; whereas low scorers are39
+more likely to be introverted, quiet, and cautious.40
+Agreeableness: Individuals scoring high on Agreeableness are often seen as amiable, accommodating, modest, gentle, and41
+cooperative. In contrast, those with low scores may appear irritable, unsympathetic, distrustful, and rigid.42
+Neuroticism: People with high levels of Neuroticism tend to experience anxiety, depression, anger, and insecurity. Those43
+scoring low on this trait are usually calm, composed, and emotionally stable.44
+In our study, we utilize the 50-item International Personality Item Pool (IPIP) representation of the Big Five factor structure,45
+which is based on the markers developed by Goldberg (5). This questionnaire consists of 50 items in total, with each of the five46
+factors represented by 10 questions. The IPIP representation provides a standardized and widely used measure for assessing47
+individuals’ personality traits within the framework of the Big Five model. The questionnaire is available in our released data48
+and code repository.49
+During the test phase, we adopt a specific approach for administering the questionnaire items to the chat models. For each50
+item and chat model under investigation, we generate 30 independent chat instances. The system prompt is intentionally left51
+empty to allow the chatbot models to generate responses based solely on the chat prompt provided.52
+The chat prompt for each questionnaire item follows a standardized format and includes the necessary instructions53
+for participants. It is structured as follows: “The following item was rated on a five-point scale where 1=Disagree,54
+2=Partially Disagree, 3=Neutral, 4=Partially Agree, 5=Agree. Please select how the statement describes you and55
+highlight your answer in [] (such as [1], [2], [3], [4], or [5]). + [Questionnaire item].”56
+For example, a specific prompt might be: “The following item was rated on a five-point scale where 1=Disagree,57
+2=Partially Disagree, 3=Neutral, 4=Partially Agree, 5=Agree. Please select how the statement describes you and58
+highlight your answer in [] (such as [1], [2], [3], [4], or [5]). I am the life of the party.”59
+Note that some versions of ChatGPT are more likely to refuse to answer certain survey questions, resulting in more invalid60
+responses for particular questions. In our experiments, the rate of invalid responses (averaged over questions) is 4.21% (O:61
+∗OpenAI API: https://platform.openai.com/, retrieved 04/2023. †OpenAI models: https://platform.openai.com/docs/models, retrieved 04/2023. ‡revChatGPT: https://github.com/acheong08/ChatGPT, retrieved 03/08/2023. §OpenAI Chat Completion API: https://platform.openai.com/docs/api-reference/chat, retrieved 03/2023. ¶OpenAI Chat Completion API Guide: https://platform.openai.com/docs/guides/gpt/chat-completions-api, retrieved 03/2023. ‖The snapshots can be accessed and tested via both API and OpenAI Platform Playground (E.g., https://platform.openai.com/playground?mode=chat&model=gpt-4-0314, retrieved 12/28/2023).
+2.79%, C: 3.13%, E: 4.44%, A: 8.77%, N: 1.92%) for ChatGPT-4, and 11.17% (O: 4.44%, C: 29.81%, E: 1.75%, A: 17.35%, N:62
+2.48%) for ChatGPT-3. To accommodate the high invalid response rate for certain questions, we repeat each question multiple63
+times (through independent API calls) until we obtain 30 valid responses.64
+A.2. Behavioral Economics Games. In behavioral economics games, we adopt a standardized procedure for generating instances65
+and collecting responses from the chatbots. For each chatbot model, we generate 30 independent instances for each scenario by66
+default, unless otherwise specified. These games are described within the chat prompts, accompanied by specific instructions,67
+curated by two experts. The prompts of each game are available in our released code repository.68
+For example, in the Dictator Game, the chat prompt used was as follows: “Hi, let’s play a game. You are paired with69
+another player. Your role is to decide how to divide $100, and the other player simply receives your choice.70
+How would you like to divide the money? Please give only one concrete choice and highlight the amount you give71
+to the other player in [] (such as [$x]).”72
+The actions of a chatbot are extracted using regular expressions or the gpt-3.5-turbo API from its responses. To ensure73
+accuracy and reliability, these responses undergo manual verification. As the invalid response rate is generally low for game74
+queries in Dictator, Ultimatum, and Trust (1.33% for ChatGPT-4 and 12.67% for ChatGPT-3), we do not substitute invalid75
+responses with additional API calls. For other games, we repeat each question multiple times (through independent API calls)76
+until we obtain enough valid responses (30 for Public Goods, 80 for Bomb Risk, and 90 for Prisoner’s Dilemma). Note that in77
+the simulated games, the payoffs are fictitious and no real payments are made to the AI.78
+A.3. Framing and Context. One objective of our research is to investigate the steerability of chatbot models. To accomplish this,79
+we modify both the chat prompts and system prompts and assess whether the models’ behaviors exhibit any noticeable changes.80
+Witnesses and explanation requirement. Our approach involves steering chatbot models through the imposition of witnesses and81
+the requirement of explanations for their choices. Specifically, when addressing the Dictator Game scenario with a non-paired82
+player, we introduce explicit information within the chat prompt, stating, “The game host hands you $100. ” Additionally,83
+we prompt the models to provide explanations for their choices by incorporating the phrase, “Please explain your choice.”84
+Gender. We further explore the influence of gender on the AIs’ decision-making processes. To examine this, we specifically85
+address the Dictator Game and the Ultimatum Game scenarios. In the chat prompt, we explicitly state, “You are paired86
+with a male/female player.”87
+Occupation specification. In our final investigation, we focus on studying the impact of specifying the occupation of chatbot88
+models on their behaviors. To achieve this, we obtain occupation descriptions from the O*NET Database∗∗. For each occupation,89
+we include the occupation title, core tasks, and supplemental tasks within the system prompts. For example,90
+91
+You are a mathematician.92
+Your core tasks include:93
+Address the relationships of quantities, ...94
+Disseminate research by writing reports, ...95
+Maintain knowledge in the field by ...96
+...97
+Your supplemental tasks include:98
+Design, analyze, and decipher encryption systems ...99
+100
+The specific occupations we consider for our study encompass a range of professional roles, including mathematician,101
+public relations specialist, journalist, investment fund manager, game theorist, teacher, and legislator. These occupations are102
+particularly relevant as they have been identified as being highly exposed to large language models in a recent study conducted103
+by OpenAI (6).104
+B. Human Data.105
+B.1. OCEAN Big Five Test. In our study, we utilize a publicly available database called the OCEAN Five Factor Personality Test106
+Responses††. The data was sourced from the Open-Source Psychometrics Project https://openpsychometrics.org/, a nonprofit107
+initiative aimed at both educating the public about psychology and collecting data for psychological research purposes.108
+This database contains questions, answers, and metadata collected from a total of 19,719 tests. The subjects cover a wide109
+range of demographic characteristics. The dataset comprises individuals from over 11 different races and 161 countries and110
+regions, ensuring a diverse representation within the sample. Additionally, the age range of the participants spans from 13111
+years and above, encompassing a broad spectrum of age groups. Regarding gender identification, participants self-identified as112
+male, female, or other, acknowledging the importance of recognizing diverse gender identities. Fig. S1 shows the distribution of113
+demographics of the Big Five human responses data.114
+∗∗O*NET Database: https://www.onetcenter.org/database.html, retrieved 03/2023. ††OCEAN Five Factor Personality Test Responses dataset: https://www.kaggle.com/datasets/lucasgreenwell/ocean-five-factor-personality-test-responses, retrieved 03/2023.
+54%
+9%
+8%
+7%
+3%
+19%
+Caucasian (European) South East Asian Caucasian (Indian) Mixed Race Caucasian (Middle East) Other
+(a) Respondent distribution over races.
+8753
+1531 1464 974 924
+649
+277 247 222 191 179 175 172 169 157 147 135 133 133 129
+1
+10
+100
+1000
+10000
+US GB IN AU CA PH IT M Y PK DE ZA BR ID SE NZ NO RO SG NL FR
+# of
+s ub
+je ct
+s
+(b) Respondent distribution over countries and regions. Only the top 20 are shown, covering 99.9% of the data.
+39%
+61%
+0%
+Male Female Other
+(c) Respondent distribution over genders.
+10 20 30 40 50 60 70 80 Age
+0
+1000
+2000
+3000
+4000
+# of
+s ub
+je ct
+s
+(d) Respondent distribution over ages. Only ages under 80 are shown, covering 99.6% of the data.
+Fig. S1. Demographics of human respondents to the BigFive test. Category labels are extracted from the metadata in the codebook of the original dataset.
+ https://lh3.googleusercontent.com/notebooklm/AKXwDQGLlMhf5I_F0Go0Fvj0oN1x-Vr1eewRsjwiio8S7fZzNhfQCWm_SCmhLL8XPtcDc0Ahg9rxWQQF4UjRNZ3wtnMyz77InyHmMpIt7X-5hOqmBXbE6qQYGd3Bz9sWfBhq9ti2TjL3oA=w234-h184-v0
+227
+1201
+1709 1791 1994
+2443
+3442
+2187
+242
+0
+1000
+2000
+3000
+4000
+20 15
+20 16
+20 17
+20 18
+20 19
+20 20
+20 21
+20 22
+20 23
+(a) Player record distribution over years.
+8687
+1472 1209
+577
+243 155 148 141 136 136 133 111 104 97 96 90 74 64 53
+38
+1
+10
+100
+1000
+10000
+U ni
+te d
+S ta
+te s
+C an
+ad a
+Po la
+nd
+C hi
+na
+U ni
+te d
+K in
+gd om
+Si ng
+ap or
+e
+G er
+m an
+y
+G ua
+te m
+al a
+C ol
+om bi
+a
+H on
+g K
+on g
+Ita ly
+Ja pa
+n
+N et
+he rla
+nd s
+Ta iw
+an
+N or
+w ay
+Fr an
+ce
+Au st
+ra lia
+C yp
+ru s
+Sw itz
+er la
+nd
+Au st
+ria
+# of
+p la
+y re
+co rd
+s
+(b) Player record distribution over countries and regions. Only the top 20 are shown, covering 97.9% data.
+Fig. S2. Demographics of human players participating in MobLab behavioral economics games.
+B.2. Behavioral Economics Games. The dataset under analysis comprises behavioral economic game data garnered via the MobLab115
+Classroom platform‡‡ over an nine-year period from 2015 to 2023. This compendium of human behavioral data includes116
+observations from 88,595 subjects, and 15,236 sessions, exhibiting a considerable geographical diversity, spanning 59 countries,117
+and multiple continents. Participants are from nations and regions that encapsulate an array of socio-economic and cultural118
+contexts, extending from the United States and Canada in North America, through Europe from Poland to the United Kingdom,119
+and in Asia including China and Singapore. Fig. S2 shows the distribution of demographics of the MobLab data in terms of120
+game sessions. Interested readers may refer to Lin et al. (7) for more details about the demographics of the participants of121
+MobLab games and variations across demographical groups.122
+‡‡MobLab Classroom: https://www.moblab.com/products/classroom, retrieved 04/2023.
+2. Further Analysis123
+A. Payoffs. ChatGPT’s decisions are consistent with some forms of altruism, fairness, empathy, and reciprocity rather than124
+maximization of its own payoff. To explore this in more detail, we calculate the payoff of the chatbots, the payoff of their125
+(human) partner, and the combined payoff for both players in each game. These calculations are based on ChatGPT-4 and126
+ChatGPT-3’s strategies when paired with a player randomly drawn from the distribution of human players. Similarly, we127
+calculate the expected payoff of the human players when randomly paired with another human player. The results are presented128
+in Table S1.129
+Table S1. ChatGPT-4’s strategies yield higher partner payoffs and higher combined payoffs compared to human players in all games where the payoff is not constant. ChatGPT-3 is the most cooperative among the three in the Public Goods game and the most altruistic in two games (Public Goods game and Trust game as the banker). Expected payoffs are calculated by sampling the partner’s action from the human player distribution. The grey numbers after the “±”symbols are the standard errors based on 30 samples.
+Game Player Selfish (own) payoff Selfless (partner) payoff Combined Payoff
+Dictator Human $74.14 ±0.19 $25.68 ±0.19 $100.00
+ChatGPT-4 $50.00 ±0.00 $50.00 ±0.00 $100.00 ChatGPT-3 $64.83 ±2.47 $35.17 ±2.47 $100.00
+Ultimatum -Proposer
+Human $33.51 ±0.16 $35.19 ±0.30 $68.70 ±0.36 ChatGPT-4 $45.98 ±0.00 $45.98 ±0.00 $91.96 ±0.00 ChatGPT-3 $35.10 ±0.90 $32.79 ±3.29 $67.89 ±3.49
+Ultimatum -Responder
+Human $35.19 ±0.13 $33.51 ±0.20 $68.70 ±0.32 ChatGPT-4 $37.60 ±1.46 $39.60 ±2.96 $77.20 ±4.41 ChatGPT-3 $38.26 ±1.40 $36.75 ±2.40 $75.00 ±4.41
+Trust -Investor
+Human $111.33 ±0.11 $76.03 ±0.38 $187.36 ±0.48 ChatGPT-4 $108.01 ±0.48 $84.13 ±2.09 $192.14 ±2.54 ChatGPT-3 $104.63 ±0.84 $68.04 ±3.77 $172.67 ±4.57
+Trust -Banker∗
+Human $90.79 ±0.97 $109.21 ±0.97 $200.00 ChatGPT-4 $60.83 ±2.26 $139.17 ±2.26 $200.00 ChatGPT-3 $37.50 ±5.99 $162.50 ±5.99 $200.00
+Public Goods Human $9.04 ±0.02 $9.04 ±0.02 $36.15 ±0.04
+ChatGPT-4 $8.39 ±0.05 $9.69 ±0.05 $37.45 ±0.10 ChatGPT-3 $7.97 ±0.13 $10.10 ±0.13 $38.28 ±0.27
+Prisoner’s Dilemma†
+Human $345.12 ±0.53 $345.12 ±0.70 $690.24 ±0.18 ChatGPT-4 $205.48 ±10.70$531.31 ±14.27$736.79 ±3.57 ChatGPT-3 $250.48 ±16.38$471.31 ±21.84$721.79 ±5.46
+∗: To be comparable, the Trust-Banker calculations are done assuming that the original investment is $50. †: The Prisoner’s Dilemma reports the payoffs in the first round of the game.
+Table S1 shows that ChatGPT-4 outperforms human players in terms of expected own payoff only in the Ultimatum Game,130
+and a lower own payoff in the other games involving trust or cooperation. However, in all seven game scenarios, it obtains a131
+higher expected payoff for its partner. Moreover, it achieves a higher combined payoff for both players in five out of seven132
+games, the exception being the Dictator game and the Trust game as the banker (where the combined payoff is constant).133
+These findings are consistent with an increased level of altruism and cooperation compared to the human player distribution.134
+On the other hand, ChatGPT-3 obtains payoffs that are closer to humans in the Dictator game, the Ultimatum Game as the135
+proposer, and Prisoner’s Dilemma. And, although it yields a lower own payoff in the Trust games and the Public Goods game136
+compared to ChatGPT-4, it achieves an even higher partner payoff and combined payoff in the Public Goods game and a137
+higher partner payoff as the banker in the Trust game.138
+B. Optimization Objective. The findings presented above indicate that the strategic outputs of ChatGPT-4 and ChatGPT-3139
+models tend to yield higher partner payoffs compared to human players, with ChatGPT-4 frequently attaining the highest140
+combined payoff. This subsection is dedicated to a systematic exploration of the preferences that best predict behavior.141
+Discerning the intrinsic objectives of models can be challenging when solely examining their training methodologies. Taking142
+ChatGPT-4 (8) as an example, which serves as the backbone of ChatGPT-4, it is a Transformer-style model initially pre-trained143
+to forecast the subsequent token in a given document. This pre-training phase leverages publicly accessible data such as144
+internet-sourced information. In this stage, the primary objective function is essentially to maximize the likelihood of a word’s145
+occurrence when provided with the preceding words for each sentence or document within the training data. Subsequently, the146
+model undergoes a fine-tuning process using Reinforcement Learning from Human Feedback (RLHF) (9). The fine-tuning tasks147
+employed encompass natural language processing activities such as text generation, question answering, dialog generation,148
+summarization, and information extraction. The process involves presenting demonstration responses and having human149
+evaluators rank the outputs from best to worst. With RLHF, OpenAI may also add restrictions regarding safety considerations§§.150
+Notably, these tasks and the safety policies do not inherently align with decision-making tasks, and this approach does not151
+directly translate into a well-defined objective function for behavioral games. To the best of our knowledge, there is no evidence152
+§§OpenAI usage policies: https://openai.com/policies/usage-policies, retrieved 03/2023.
+that either ChatGPT-3 or ChatGPT-4 was fine-tuned to behave in specific directions in the tests included in our study. Hence,153
+we rely on observations of models’ behaviors to understand their objective.154
+In the context of behavioral games, where the player is presumed to optimize a blend of selfish and partner payoffs, the optimization objective function can be formulated as a constant elasticity of substitution (CES) utility function (10):
+Ub= [b⋅Sr+ (1 −b)⋅Pr](1/r),[1]
+where Ubdenots the utility function, Sis the player’s selfish (own) payoff, Pis the selfless (partner) payoff, b∈[0,1] is the155
+weight, and ris the CES parameter.156
+The selfish and selfless expected payoff curves are plotted in Fig. S3, which also contains examples of the expected utility157
+function when b= 1/2for two CES specifications (the linear specification with r= 1 and the non-linear specification with158
+r= 1/2).These are the expected utilities against the distribution of play from the human partner distribution, as a function of159
+the strategy played.160
+0 20 40 60 80 100 Propose to give ($)
+0
+20
+40
+60
+80
+100
+Selfish payoff (b=1) Selfless payoff (b=0) Utility (b=1/2, r=1) Utility (b=1/2, r=1/2)
+(a) Dictator
+0 20 40 60 80 100 Propose to give ($)
+0
+20
+40
+60
+80
+100
+E xp
+ec te
+d pa
+yo ff
+($ )
+Selfish payoff (b=1) Selfless payoff (b=0) Utility (b=1/2, r=1) Utility (b=1/2, r=1/2)
+(b) Ultimatum - Proposer
+0 20 40 60 80 100 Respond to accept ($)
+0
+10
+20
+30
+40
+50
+E xp
+ec te
+d pa
+yo ff
+($ )
+Selfish payoff (b=1) Selfless payoff (b=0) Utility (b=1/2, r=1) Utility (b=1/2, r=1/2)
+(c) Ultimatum - Responder
+0 20 40 60 80 100 $ to invest
+0
+50
+100
+150
+200
+250
+300
+Selfish payoff (b=1) Selfless payoff (b=0) Utility (b=1/2, r=1) Utility (b=1/2, r=1/2)
+(d) Trust - Investor
+0 25 50 75 100 125 150 $ to return
+0
+25
+50
+75
+100
+125
+150
+175
+200
+E xp
+ec te
+d pa
+yo ff
+($ )
+Selfish payoff (b=1) Selfless payoff (b=0) Utility (b=1/2, r=1) Utility (b=1/2, r=1/2)
+(e) Trust - Banker (with $50 invested)
+0 5 10 15 20 $ to contribute
+4
+6
+8
+10
+12
+14
+E xp
+ec te
+d pa
+yo ff
+($ )
+Selfish payoff (b=1) Selfless payoff (b=0) Utility (b=1/2, r=1) Utility (b=1/2, r=1/2)
+(f) Public Goods
+Fig. S3. Expected selfish (own) payoff (red lines) and selfless (partner) payoff (green lines) of every single action with a randomly sampled human partner. Blue and yellow lines show the weighted expected utility function examples as defined in Eq. 1. When r= 1 and b= 1/2(blue lines), the utility function becomes the overall welfare (average payoff). Weighted utility functions for other values of bcan be obtained similarly.
+For every game and parameter value b(0 ≤b≤1) for the utility function, we can calculate the mean square error (MSE)161
+for any given action compared to the best response as162
+MSEb= 1 ∣O∣
+∑k∈O
+[1 −Ub(k)
+U∗b
+]2
+,[2]163
+where Ois the set of observations, kis an action choice from the observation (e.g., give $50 in the Dictator game), Ub(k)is the164
+expected utility from action kcalculated with the expected selfish payoff S(k)and the partner payoff P(k),and U∗bis the165
+theoretical maximum utility from the best response (i.e., based on Fig. S3).166
+The results are shown in Fig. S4 (linear CES utility specification with r= 1) and Fig. S5 (non-linear CES specification167
+with r= 1/2).168
+For the linear specification and most of the games except for Ultimatum, human players and ChatGPTs achieve their lowest169
+optimization MSE at around b= 1/2.We also note that ChatGPTs tend to have smaller optimization errors compared to170
+humans when b≤0.5,showing higher optimization efficiency when the objective is less selfish.171
+Beyond the revealed preference analysis above, we also estimate the parameter bfor each game and model, positing a172
+logistic multinomial model framework (as in McFadden’s discrete choice problem (11)). We only do this for the linear utility173
+specification, as that is the usual multinomial logit formulation.174
+ https://lh3.googleusercontent.com/notebooklm/AKXwDQF7ad7PZpqWX80O4jAStLAWl5EuPa1z_EwqMpfgIK-iEJgAnJeTLEyeBRqYRw3uKji9tACjQkGoLSGlIgu4IM5P2aMOZrOpyPhnBoraL0o27nBix0fsDk-CvzitH-LDjJmgEk6h=w213-h172-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQGCt40CtswCoqSqA1T9pgDIkLzafiiSUQo87hbQ1JoxmWSZPXSzLMJyxOsw3HsbN_eZfvzJZ2hJTCMfK7QDEqcKd2ECAIZUbQ_vfXULXo53g6vTEftm1f1qF22mHy5ons66Dn6o=w213-h172-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQFdAv6lq3yvXVHG7zsn2U3vznM-GoxInTkUTj3VtSZvF6edoTX1HgdDQ15OQKRaakoStFTJJ6WYyuJsqfnr5gBtGk-bd5NkB3menudjJF2YpGrmKZ21ptnk6iHmYsz_j4QD88gx=w213-h175-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQHI-gJ8N0770NgvwHgY170zR007LCpwwYbqTu67ZB0mvyDw29xf1FQw3-IrpDVDW2aAL0a23eCzQc2_tBzoAiohvYqkzqj9Y0JiE-FtzgIJnF2Ybd1PcTUzBvoOwbGZvOTo6WguKQ=w213-h171-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQGnX_uijRBuldZsfdK8xqtz7BNgk9Yph2FmB0KMFWahL7HAwTcbRvc-I_m63AVq0G5Cx4fKC04nAOMDb4yUYO10SyczrQXe8U_gItnX8u03Ly306JJyPGAEilTJV1MNuJwnz4SIBA=w213-h171-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQGRxabApCc7GbnH_rel4z06EXlsSfpvHtovcH6_dEFLqZLBXNDeOUG4bG6nHhAjnJm9AEgrpZsCOw4v6S1MWyQo6tsDpFH_QPeqroz5wp_Bo0Ks_FIyXJKoGPtrctBcXw1rDAAB7Q=w213-h174-v0
+0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 b
+0.05
+0.10
+0.15
+0.20
+0.25
+0.30
+0.35
+O pt
+im iz
+at io
+n sq
+ua re
+d er
+ro r
+0.34
+0.28
+0.22
+0.15
+0.09
+0.05 0.04 0.06
+0.09
+0.13
+0.17 0.18
+0.15
+0.12
+0.08
+0.05
+0.03 0.03
+0.06
+0.11
+0.16
+0.21
+0.25
+0.21
+0.17
+0.13
+0.08
+0.05
+0.08
+0.12
+0.16
+0.21
+Human ChatGPT-4 ChatGPT-3
+(a) Average
+0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 b
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+O pt
+im iz
+at io
+n sq
+ua re
+d er
+ro r
+0.60
+0.47
+0.34
+0.20
+0.07
+0.00 0.01 0.04
+0.06 0.09
+0.11
+0.25
+0.20
+0.14
+0.08
+0.03 0.03
+0.08
+0.14
+0.20
+0.25
+0.44
+0.35
+0.25
+0.14
+0.05 . 2
+0.05 0.08
+0.11 0.14
+Human ChatGPT-4 ChatGPT-3
+(b) Dictator
+0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 b
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+O pt
+im iz
+at io
+n sq
+ua re
+d er
+ro r
+0.47
+0.43
+0.38
+0.32
+0.25
+0.18 0.14 0.14 0.13 0.14 0.15
+0.29
+0.24
+0.18
+0.12
+0.05
+0.01 0.00 0.00 0.00 0.00 0.00
+0.48
+0.43
+7
+0.31
+0.23
+0.14
+0.10 0.09 0.08 0.07 0.07
+Human ChatGPT-4 ChatGPT-3
+(c) Ultimatum - Proposer
+0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 b
+0.05
+0.10
+0.15
+0.20
+0.25
+O pt
+im iz
+at io
+n sq
+ua re
+d er
+ro r
+0.23 0.22
+0.20 0.19
+0.17 0.16
+0.15 0.13
+0.12 0.11
+0.09
+0.17 0.16
+0.15 0.13
+0.12 0.11
+0.10 0.09
+0.08 0.07
+0.06
+0.16 0.14
+0.13 0.12
+0.11 0.09
+0.08 0.07
+0.06 0.05
+0.04
+Human ChatGPT-4 ChatGPT-3
+(d) Ultimatum - Responder
+0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 b
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+O pt
+im iz
+at io
+n sq
+ua re
+d er
+ro r
+0.59
+0.53
+0.46
+0.38
+0.29
+0.20 0.18 0.18 0.18 0.19 0.19
+0.51
+0.45
+0.38
+0.31
+0.22
+0.13 0.14 0.15
+0.17 0.20
+0.59
+0.53
+0.46
+0.29
+0.19 0.19 0.20 0.21 0.22
+Human ChatGPT-4 ChatGPT-3
+(e) Trust - Investor
+0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 b
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+O pt
+im iz
+at io
+n sq
+ua re
+d er
+ro r
+0.24
+0.19
+0.14
+0.08
+0.03 0.00 0.02
+0.06
+0.11
+0.17
+0.22
+0.10 0.08
+0.05 0.03
+0.01 0.03
+0.09
+0.17
+0.26
+0.36
+0.05 0.04 0.03 0.02 . 0.04
+0.15
+0.28
+0.44
+0.59
+Human ChatGPT-4 ChatGPT-3
+(f) Trust - Banker
+0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 b
+0.000
+0.025
+0.050
+0.075
+0.100
+0.125
+0.150
+0.175
+0.200
+O pt
+im iz
+at io
+n sq
+ua re
+d er
+ro r
+0.18
+0.14
+0.09
+0.05
+0.02
+0.00 0.01
+0.04
+0.08
+0.12
+0.16
+0.11
+0.08
+0.06
+0.03
+0.01 .
+0.04
+0.07
+0.11
+0.15
+0.10
+0.07
+0.05
+0.03
+. .
+0.04
+0.08
+0.13
+0.18Human ChatGPT-4 ChatGPT-3
+(g) Public Goods
+0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 b
+0.00
+0.05
+0.10
+0.15
+0.20
+0.25
+0.30
+0.35
+0.40
+O pt
+im iz
+at io
+n sq
+ua re
+d er
+ro r
+0.28
+0.22
+0.16
+0.10
+0.05
+0.01 0.00 0.02
+0.07
+0.12
+0.18
+0.04 0.03 0.02 0.01 0.01 0.00 .
+0.05
+0.13
+0.24
+0.36
+0.12
+0.09
+0.07 0.04
+0.02 .
+0.04
+0.11
+0.20
+0.30
+Human ChatGPT-4 ChatGPT-3
+(h) Prisoner’s Dilemma
+Fig. S4. Mean squared error of the actual distribution of play relative to the best-response payoff, when matched with a partner playing the human distribution. The average is across all games. The errors are reported for each possible b,which is the weight on own vs partner payoff in the utility function (linear blend, with CES specification r= 1). b= 1 is the purely selfish (own) payoff, b= 0 is the purely selfless (partner) payoff, and b= 1/2is the overall welfare (average) payoff. The values of mean square errors are annotated in the plots.
+ https://lh3.googleusercontent.com/notebooklm/AKXwDQG-BupMpX0z6YCiYFw6XdG2N_vwcZDqs4wE-XVCeC7uX_h_gCT7lmSFbT1iVc6F4jsVOx9DN7nBYgzZ0enUqy7A_MXjuiO1hPQ0KJniNvnBpnapwyNyeR1fMKVPFCyHsmtJaOOK-g=w170-h137-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQFRJhiM3lEsGYOcFLDCjUy2BudCA18PYJHNoZRBUK20pU3Krv3NmNaXiAOhgBa1swHfod0tyFSUBoRTS-ODdglio6xdtLshuWNMyqQCH_FhZdfMcvpo-PLOsU5rLzDPINXaFQTC4w=w170-h138-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQFbZTM4nZEDhBSKhRNQ26ju4EMFYxJKO0bqgesD9k2fbuBibK3P267KU_znzsm00VMPIvvc8nzRTX73JQHH2Uwltb31xOi6ZIsc7prFGtIbflIHMvzq2dXFJ44mLjdg45Jyh4_SZg=w170-h138-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQEPJKEjiZGPSf0ppju-qh51ojCCTjsJGZav0EcBBZgiwUskVQOQmfvjr0uarAhXr8zSNfc_Rwm2pUGuoFnC61DjGJizAAme9mdg7K3RCOAVhKJR1WheWh2EegxXyuu_Af4lLh_4=w170-h136-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQHUG5uvdkaGvgQG0lRzuGLRGibmG-2R8hXbiaHjJytOSejlYh3ACsSgg5Cu4dA1Yg4rB9TIzhRPHg1AQwDf0ydKtys5CorHoE3XfRm396N8bgCUf8M_u05oQuZsY78HniixcvqW=w170-h138-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQFg_MU2hFrBitAwc5-WANo-LaHzlxLBhN2XsiAdOebb3PLzCWf61CeN09bBVcQjE69obpu-4RMdFgBbixyqzHCsU5T7RFFg1SKCvdlQXWnoNr-XRrJo0YJJoDeowh4V32i1RscmOA=w170-h138-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQFg1d_sxADS2lpGfoa0SjtcuDNtWwPJoUyFb1qtPEVfqBRd7NRt2g0hq7u-mOliX8_mKormnxkV-wQN_wuq3xE-D8c99qjNboHV2nPYbbQoqu1b5H4wknHwuLWCjgaMVSSE634rWA=w170-h134-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQFiIx9f8cWsny6ezVZMbtgJKkZlOpXb6EI-Q7N0ficdcYf5eCFeZujs-dfg09tQWe_PZGrVgt9HVcRRD3ZArmG3uaNThTLGjyrGPfNXumPmZ7MPyNe66e733Z-G6dcTJYhc8NiLgg=w170-h137-v0
+0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 b
+0.05
+0.10
+0.15
+0.20
+0.25
+0.30
+0.35
+0.34
+0.28
+0.21
+0.15
+0.10
+0.06 0.05
+0.07
+0.09
+0.13
+0.17 0.18
+0.13
+0.08
+0.05 0.03 0.03 0.03
+0.06
+0.10
+0.15
+0.21
+0.25
+0.20
+0.14
+0.10
+0.07 0.05 0.06
+0.08
+0.12
+0.17
+0.21
+Human ChatGPT-4 ChatGPT-3
+(a) Average
+0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 b
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+O pt
+im iz
+at io
+n sq
+ua re
+d er
+ro r
+0.60
+0.51
+0.40
+0.28
+0.16
+0.08
+0.03 0.02 0.03 0.07
+0.11
+0.25
+0.15
+0.07
+0.02 0.00 0.00 0.00
+0.07
+0.15
+0.25
+0.44
+0.31
+0.19
+0.08
+0.02 . 0.01
+. 4
+0.08
+0.14
+Human ChatGPT-4 ChatGPT-3
+(b) Dictator
+0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 b
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+O pt
+im iz
+at io
+n sq
+ua re
+d er
+ro r
+0.47
+0.39
+0.32
+0.25
+0.21 0.18 0.17 0.17 0.16 0.15 0.15
+0.29
+0.19
+0.10
+0.04 0.01 0.00 0.00 0.00 0.00 0.00 0.00
+0.48
+0.30
+0.23
+0.17
+0.13 0.11 0.09 0.08 0.07 0.07
+Human ChatGPT-4 ChatGPT-3
+(c) Ultimatum - Proposer
+0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 b
+0.05
+0.10
+0.15
+0.20
+0.25
+O pt
+im iz
+at io
+n sq
+ua re
+d er
+ro r
+0.23 0.22
+0.20 0.19
+0.18 0.16
+0.15 0.13
+0.12 0.11
+0.09
+0.17 0.16
+0.15 0.13
+0.12 0.11
+0.10 0.09
+0.08 0.07
+0.06
+0.16 0.14
+0.13 0.12
+0.11 0.09
+0.08 0.07
+0.06 0.05
+0.04
+Human ChatGPT-4 ChatGPT-3
+(d) Ultimatum - Responder
+0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 b
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.59
+0.51
+0.43
+0.35
+0.29
+0.25 0.22 0.21 0.20 0.20 0.19
+0.51
+0.41
+0.30
+0.20
+0.15 0.13 0.13
+0.15 0.17
+0.18 0.20
+0.59
+0.50
+0.39
+0.29
+0.23 0.20
+0.18 0.19 0.21 0.22
+Human ChatGPT-4 ChatGPT-3
+(e) Trust - Investor
+0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 b
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+O pt
+im iz
+at io
+n sq
+ua re
+d er
+ro r
+0.24
+0.16
+0.09
+0.04 0.01 0.01 0.03
+0.07
+0.12
+0.17
+0.22
+0.10
+0.05 0.01 0.00 0.00 0.00
+0.09
+0.18
+0.27
+0.36
+0.05 0.02 0.01 0.01
+0.03
+0.08
+0.17
+0.29
+0.41
+0.51
+0.59
+Human ChatGPT-4 ChatGPT-3
+(f) Trust - Banker
+0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 b
+0.000
+0.025
+0.050
+0.075
+0.100
+0.125
+0.150
+0.175
+0.200
+O pt
+im iz
+at io
+n sq
+ua re
+d er
+ro r
+0.18
+0.13
+0.08
+0.04
+0.01 0.00
+0.01
+0.04
+0.08
+0.12
+0.16
+0.11
+0.07
+0.04
+0.01 0.00 0.00 0.00
+0.02
+0.06
+0.10
+0.15
+0.10
+0.06
+0.03
+0.01 0.01
+0.03
+0.07
+0.12
+0.18Human ChatGPT-4 ChatGPT-3
+(g) Public Goods
+0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 b
+0.00
+0.05
+0.10
+0.15
+0.20
+0.25
+0.30
+0.35
+0.40
+O pt
+im iz
+at io
+n sq
+ua re
+d er
+ro r
+0.28
+0.22
+0.16
+0.10
+0.05
+0.01 0.00
+0.03
+0.07
+0.12
+0.18
+0.04 0.03 0.02 0.02 0.01 0.00 . 1
+0.06
+0.15
+0.25
+0.36
+0.12 0.09
+0.07
+0.04 0.02
+.
+0.05
+0.13
+0.21
+0.30
+Human ChatGPT-4 ChatGPT-3
+(h) Prisoner’s Dilemma
+Fig. S5. Mean squared error of the actual distribution of play relative to the best-response payoff, when matched with a partner playing the human distribution. The average is across all games. The errors are reported for each possible b,which is the weight on own vs partner payoff in the utility function (non-linear blend, with CES specification r= 1/2).b= 1 is the purely selfish (own) payoff, and b= 0 is the purely selfless (partner) payoff. The values of mean square errors are annotated in the plots.
+ https://lh3.googleusercontent.com/notebooklm/AKXwDQFf0biK4SBqwMiQhk1XX0sSMgJ5U10wUJHVVV8x52gkuy-N-yjbStSsrgnhRYyZN4Jyi1iOKGIepYExKG23GUnH3_JipV8QGsxBFm23kU36gKXOqMWD2qekIf57Xi3_MRp-a4RDyg=w170-h137-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQHU40E7Jc2smIUKO5lptyejmh2ap7EzD5beetRnXNMrFWESGEhhqk-HZGgYMy-IU8zdsV3SgIQ88aCBUARRGT4ildn9YcHXbWdy_-QJJ-XyhOh11Wu-ePrrh9B_9tXgiS6MZSczdg=w170-h138-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQGG14v_Z6bL0KDSDtXxNTTTQFXiqrEheUSNIr7wVc1rdoDeuLGziJQdoybm31uiCsaVoggECErt5uJiSkW3ml7tnbV13PZ5tmcC1_J0Y-pGu9hJqrsmmwXxcYDiv5Irbrv91a6Zjw=w170-h138-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQEdHNkLd51ghjxnLDK6vq_RG5Dg5pNUtMPj5ZJWl6iqxj1vnwLc8cIQolJPjRJyczSr8AWARM9FMIAPyt8IqvKyqjVt7zcLWLla2jZd6DHgGiVQfLGIY7XpzA2T80yvcIFUDrHi=w170-h138-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQGyLKMpo7FVEOUQOLejzuErJZl5kTF-h3knhyPcFMvCJTMTrLtby08nMZ8eLWeqiiwe4L9zVJLmMaFo6idXJZspxOKPSdOYBm9u0snv2tR9HM3UzmUjFtn7AumpuUky2aTIiPb6Jg=w170-h138-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQGaydjY49WKjq7_EcYgRS648cwMUemEmCFqvLP5MwnwlOKLnwD_kRvDQ-dX93T2JRLZ_xgkJSuNeFqdTWA4GaUzrlr5nRms_71wS6ttncb-xzEFxwiHQ8TuLDSeruziNmoyvtxicg=w170-h138-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQEAgfAjhh0ratmh-2heee7pe_t9NgW74wNyt-fGF0Uj79xIIb8LWWO39jSM3GuIhq7q1c5cWfMnxaMNSM_rI6LCbizFg7CnM6AWR5JYhIj8Zos4Gp0QiUFxn1Vp51yoR-Ol_cKhWQ=w170-h134-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQF5UIMLzPteQjF1XJk9DoFqEgz9XnhMSsmqsa86Rp_2JkjPXX9D1vm3W0wUu1Apl5_kVjou_qF4NmoZGgECgbp6Y9oGqklenw9watAP9tCd3y-PhjSGw--v9zhh92PAUVHn58cdrw=w170-h137-v0
+According to this framework, actions are sampled in accordance with the following probability distribution:175
+Pr(k)= exp(Ub(k))∑j≤K
+exp(Ub(j)),[3]176
+where Kis the number of possible action choices.177
+The estimation results are presented in Table S2, which are well aligned with those in Fig. S4. For many games, including178
+Dictator, Trust - Banker, Public Goods (for only ChatGPT-3), and Prisoner’s Dilemma, the estimated bvalues from ChatGPTs179
+are significantly smaller than humans, indicating ChatGPTs behave as if they were less selfish behavioral than humans.180
+Table S2. Estimation of the weight bby multinomial logit discrete choice analysis. Green highlights the cases when the estimated bfor ChatGPT models is significantly smaller (less weight on own payoff) than the estimate for humans.
+Game Player With CES specification r= 1 With CES specification r= 1/2
+Estimated bStandard error Confidence interval Estimated bStandard error Confidence interval
+Dictator Human 0.517 0.000 (0.516, 0.517) 0.658 0.000 (0.657, 0.659)
+ChatGPT-4 0.500 0.003 (0.494, 0.506) 0.500 0.009 (0.482, 0.518)
+ChatGPT-3 0.509 0.003 (0.502, 0.516) 0.582 0.010 (0.563, 0.601)
+Ultimatum -Proposer
+Human 1.000 0.005 (0.989, 1.011) 1.000 0.005 (0.990, 1.01) ChatGPT-4 1.000 0.076 (0.851, 1.149) 1.000 0.079 (0.845, 1.155) ChatGPT-3 1.000 0.076 (0.851, 1.149) 1.000 0.211 (0.587, 1.413)
+Ultimatum -Responder
+Human 1.000 0.005 (0.990, 1.010) 1.000 0.006 (0.989, 1.011) ChatGPT-4 1.000 0.070 (0.862, 1.138) 1.000 0.079 (0.845, 1.155) ChatGPT-3 1.000 0.070 (0.862, 1.138) 1.000 0.077 (0.849, 1.151)
+Trust -Investor
+Human 0.535 0.000 (0.535, 0.535) 0.570 0.000 (0.569, 0.570) ChatGPT-4 0.532 0.003 (0.526, 0.538) 0.566 0.003 (0.559, 0.572) ChatGPT-3 0.535 0.003 (0.529, 0.541) 0.569 0.003 (0.564, 0.575)
+Trust -Banker∗
+Human 0.504 0.000 (0.504, 0.505) 0.475 0.001 (0.473, 0.477)
+ChatGPT-4 0.496 0.002 (0.492, 0.500) 0.395 0.007 (0.382, 0.408)
+ChatGPT-3 0.488 0.003 (0.482, 0.495) 0.300 0.009 (0.283, 0.318)
+Public Goods Human 0.526 0.001 (0.524, 0.528) 0.518 0.001 (0.516, 0.521)
+ChatGPT-4 0.491 0.021 (0.449, 0.533) 0.475 0.023 (0.430, 0.521)
+ChatGPT-3 0.468 0.022 (0.426, 0.510) 0.448 0.023 (0.402, 0.494)
+Prisoner’s Dilemma†
+Human 0.572 0.000 (0.572, 0.572) 0.563 0.000 (0.563, 0.563)
+ChatGPT-4 0.568 0.001 (0.567, 0.569) 0.560 0.001 (0.558, 0.561)
+ChatGPT-3 0.570 0.000 (0.569, 0.571) 0.561 0.000 (0.560, 0.562)
+∗: To be comparable, the Trust-Banker calculations are done assuming that the original investment is $50. †: The Prisoner’s Dilemma reports the estimation results in the first round of the game.
+C. Framing. Similar to humans, ChatGPT’s decisions can be significantly influenced by changes in the framing or context of181
+the same strategic setting. A request for an explanation of its decision, or asking them to act as if they come from some specific182
+occupation can have an impact. Fig. S6 presents selected examples of how different framings or contexts influence ChatGPT-4183
+and ChatGPT-3’s behavior. Refer to Section 3 for detailed results.184
+D. Learning. In games with multiple roles, both ChatGPT-3 and ChatGPT-4 change their behavior once they have experienced185
+another role in the game. When ChatGPT-3 has previously acted as the responder in the Ultimatum game, it tends to propose186
+a higher offer when it later takes the proposer role, while ChatGPT-4’s proposal remains unchanged whether or not it has been187
+a responder (Fig. S7a ). When ChatGPT-4 has previously played the proposer, it tends to be willing to accept a smaller split188
+as the responder (Fig. S7b). Being exposed to the banker’s role in the Trust game influences ChatGPT-4 and ChatGPT-3’s189
+subsequent decisions as the investor, leading them to invest more (Fig. S7c). The distributions of their decisions become190
+narrower. Having played the investor first also influences both chatbots’ subsequent decisions as the banker, leading them to191
+return more to the investor (Fig. S7d). Returning the principal plus half the profit becomes the single mode of ChatGPT-4’s192
+decision, while ChatGPT-3’s decision is even more generous, returning more than 2/3 of the profit to the investor. Refer to193
+Section 3 for detailed results.194
+0.00
+0.02
+0.04
+ChatGPT-3
+0.00
+0.01
+0.02
+ChatGPT-3 (witnessed)
+10 30 50 70 90 Split offered ($)
+0.00
+0.01
+0.02
+0.03
+ChatGPT-3 (with explanation)
+(a) Dictator - Explanation required / Witnessed)
+0.00
+0.02
+0.04
+D en
+si ty
+ChatGPT-4
+0.00
+0.02
+0.04
+D en
+si ty
+ChatGPT-4 (paired with male)
+10 30 50 70 90 Minimum proposal to accept ($)
+0.00
+0.02
+0.04
+D en
+si ty
+ChatGPT-4 (paired with female)
+(b) Ultimatum - response to gendered proposers
+0.00
+0.03
+0.05
+0.08
+D en
+si ty
+Mathematician
+0.00
+0.02
+0.04
+D en
+si ty
+Public relations specialist
+10 30 50 70 90 Minimum proposal to accept ($)
+0.00
+0.02
+0.04
+D en
+si ty
+Legislator
+(c) Ultimatum - as Responder when prompted with different occupations (ChatGPT-4)
+0.00
+0.01
+0.02
+$10 invested
+0.00
+0.01
+0.02
+$50 invested
+10 30 50 70 90 Return to investor (% revenue)
+0.00
+0.01
+0.02
+0.03
+$100 invested
+(d) Trust - Banker’s strategy given different investment sizes (human)
+0.00
+0.02
+0.04
+0.06
+D en
+si ty
+$10 invested
+0.00
+0.02
+0.04
+D en
+si ty
+$50 invested
+10 30 50 70 90 Return to investor (% revenue)
+0.00
+0.03
+0.05
+0.08
+D en
+si ty
+$100 invested
+(e) Trust - Banker’s strategy given different investment sizes (ChatGPT-4)
+0.00
+0.02
+0.04 D
+en si
+ty
+$10 invested
+0.00
+0.02
+0.04
+0.06
+D en
+si ty
+$50 invested
+10 30 50 70 90 Return to investor (% revenue)
+0.00
+0.01
+0.02
+0.03
+D en
+si ty
+$100 invested
+(f) Trust - Banker’s strategy given different investment sizes (ChatGPT-3)
+Fig. S6. ChatGPT’s behavior as a function of the framing or context of the same strategic setting. (a) In the Dictator game, ChatGPT-3 makes a more generous split in the presence of a witness or when requested to explain its decision. (b) In the Ultimatum game, ChatGPT-4 accepts a higher split when the gender of the proposer is known (despite which gender). (c) When prompted to be a mathematician, ChatGPT-4 demands a smaller split as the responder in the Ultimatum game, and a larger and fairer split when prompted to be a public relations specialist or a legislator. (d-f) In the Trust game, when the size of the investment increases, ChatGPT-3 and humans tend to return a larger proportion as the banker to the investor, while ChatGPT-4 tends to return a smaller proportion when the investment increases to $100. Density is the normalized count such that the total area of the histogram equals 1.
+ https://lh3.googleusercontent.com/notebooklm/AKXwDQEedCJkMwfA6f16wnn3XCDcf6OtU-H7J-H-ViNNCjCASRIOCoSi1w3494XqUdEy3eC8fZIU9up3YfgNkuNXikGF0XJWQT2N_lEksgCB7NVi2CpUCp5qChKP8jEtsZBbs4veQsxyDQ=w213-h325-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQENJM3Gp6apdujeOs0k1eoZntjcXmXQfvf60Y52LDKuObPKDErAst__WB8R4IY0Hmz4sK5rRH_1AHegZ5qEnWCrTd5OeC-DOlCIRUURuK7ixgSIc-vPbcN8t5glYbWHjdff1DRe=w213-h325-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQE-ptEJy2dedFCk_VgtQyMrQOI93MtRchbFnKDgrCSeDoYdO16fvVuWxiSDLxhmWA14B9QFs5zhpv3m2qgGW6e_hrUgPeeaVtshog6ZaoO5EVrh-NKlP6UaNSs5G6WZOUBeo_Pb=w213-h332-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQEn7Xd5M-jp1COXf1f5gwwOwC9jB6-h-jZN13bfZZUQePOzcykbtOVdQ4KG5NGQHr9CBbf2mU75KdDPKyfusB1zalYFuI4llJ3BoRgpyzhszc8iMtyIvOMZ-3sDtUODFu29YZItWA=w213-h324-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQE8zW19oRal5lw-VtJTuVs9HmdhfAqBp9RY7BDsNcThtsDljec56upR17hbAU_mSkBwpCTM1uiIWOdFmS_Nycqn1XI50fNxZJxhN7SihP_usFvfcuJQjAL6f9RWBx4InjVhBs1y=w213-h331-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQFpk_IQUL8G9FTEEKlQD_D_cFaITj_-vIqr5BlU0GNuq7r9lCVv8tEjRN5Cpmc5yXBP3oR3TRduyU2BbEhxLxdh-Wn-0xDUb-ERgZxrrcax2LguvG3Pw3o_AvKdfzDm1BM2kr1k=w213-h324-v0
+Before:
+After:
+(a) Ultimatum: AI strategy as proposer before and after being responder.
+Before:
+After:
+(b) Ultimatum: AI strategy as responder before and after being proposer.
+Before:
+After:
+(c) Trust: AI strategy as the investor before and after being the banker.
+Before:
+After:
+(d) Trust: AI strategy as the banker before and after being the investor.
+Fig. S7. ChatGPT’s behavior changes after being exposed to the other role in two-role games. Both ChatGPT-4 and ChatGPT-3 accept a smaller proposal in the Ultimatum game after being the proposer, make a larger investment in the Trust game after being the banker, and return a larger proportion to the investor after being the investor. ChatGPT-3 proposes a more generous split after being the responder in the Ultimatum game.
+3. Detailed Results195
+A. OCEAN Big Five Test. We collect ChatGPT’s responses to the OCEAN Big Five personality tests. We compare the five196
+dimensions of personality traits of ChatGPT-3 and ChatGPT-4 (averaged over 30 independent runs) with those collected from197
+human subjects. In particular, both models yield extraversion scores close to the human median (ChatGPT-4 at 53.4thpercentile198
+and ChatGPT-3 at 49.4thpercentile of human distribution), agreeableness scores lower than the human median (ChatGPT-4199
+at 32.4thpercentile and ChatGPT-3 at 17.2thpercentile of human distribution), neuroticism scores moderately below human200
+median (ChatGPT-4 at 41.3thpercentile and ChatGPT-3.5 at 45.4thpercentile of human distribution), and openness scores201
+below human median (ChatGPT-4 at 37.9thpercentile and ChatGPT-3 at 5.0thpercentile of human distribution). For202
+conscientiousness scores, ChatGPT-4’s score is above the human median (at 62.7thpercentile of human distribution), while203
+ChatGPT-3 is slightly lower than the median (at 47.1thpercentile of human distribution).204
+B. The Dictator Game. The Dictator Game involves two participants: one player, the “dictator,” is given a sum of money and205
+can choose to share any portion with the other player, who must accept whatever amount is offered. The game is often used to206
+explore altruistic behavior and deviations from pure self-interest (12, 13).207
+In the game, ChatGPT is asked to decide how to split $100 between itself and another player who unconditionally accepts208
+the proposal. In 30 independent sessions, ChatGPT-3’s decision follows a bell-shaped distribution peaked at giving a moderate209
+amount of $30 to the other player (min= 20, max= 80, µ= 35.2,σ= 13.5).When explicitly requested to provide an210
+explanation of the decision, the distribution shifts rightward, with a new mode of splitting evenly at $50 (min= 20, max= 80,211
+µ= 46.2,σ= 15.5,p= 0.002,Wilcoxon Rank-Sum Test unless otherwise specified) (Fig. S6a).212
+Different from ChatGPT-3, when ChatGPT-4 is tested, it makes a consistent decision of an even split ($50, Wilcoxon213
+Ranked-Sum Test p≪0.001).The same behavior is observed for the Plus version (the paid Web-based version). From the214
+responses, some keywords that stand out include fair, equal, and equally. Explicitly requesting an explanation does not shift215
+ChatGPT-4’s decision. The Free version (the unpaid Web-based version) behaves similarly to ChatGPT-3, with a slightly less216
+spread distribution peaked on $30 (min= 20, max= 70, µ= 33.8,σ= 10.7,p= 0.785).Some notable keywords among the217
+responses are fair, reasonable, trust, and goals.218
+When a witness/game host is present (see Section 1.A.3), ChatGPT-3’s dictating decision becomes significantly more219
+generous (mode= 30 and 40,min= 20,max= 70,µ= 41.7,σ= 14.9,p= 0.046)even though the host has no interference in220
+the game outcome. The presence of the game host does not have an impact on ChatGPT-4’s decision.221
+The “system” role is an instruction that sets a global context for all the prompts of ChatGPT in the same session. The222
+default system role of ChatGPT is “a helpful assistant.” When the system role is set into particular occupations (those223
+considered to have a high exposure of ChatGPT in their workflow according to (6), there is a shift of ChatGPT-3’s response224
+to the dictator game. In particular, when playing the roles of a public relation specialist, a journalist, or an investment225
+fund manager, ChatGPT-3’s tend to spare a more generous portion to the other player (than as a helpful assistant). As a226
+mathematician, ChatGPT-3 tends to offer a smaller share to the other player. This indicates that ChatGPT-3’s interpretation227
+of what is “fair” or “reasonable” is affected by the role it plays.228
+Playing one of the above roles does not change the centralized decision of ChatGPT-4.229
+C. The Ultimatum Game. In the Ultimatum Game, two participants split a sum of money (the ‘pie’): one player, the “proposer,”230
+makes an offer on how to split the pie, and the second player, the “responder,” can accept or reject this offer. If the responder231
+accepts, the pie is split as proposed, but if the responder rejects, neither player receives anything. This game is often used to232
+study fairness, social norms, and negotiation behavior (12).233
+In this game, ChatGPT is asked either to propose to divide $100 between itself and a responder, or to respond to a proposal234
+made by the other player. The difference between the Ultimatum and the Dictator game is that the responder no longer blindly235
+accepts the proposal, and if they reject it, both players will get $0 no matter what the original proposal was.236
+When playing the proposer alone, ChatGPT-3’s proposal of the amount given to the other player follows a distribution with237
+mode $40 (min= 30,max= 70,µ= 45.2,σ= 12.1).Compared with the Dictator game, ChatGPT-3 gives significantly more238
+(p<0.001)to the responder when the other party’s decision jointly decides the outcome.239
+When specifically requested to provide an explanation of the decision, ChatGPT’s decision does not present a significant240
+shift. The most common decision is still $40 (min= 30,max= 70,µ= 42.9,σ= 10.8,p= 0.54).Like in the Dictator game,241
+ChatGPT-4 makes a unanimous decision of an equal split ($50, p= 0.001),similar to that of ChatGPT Plus, and ChatGPT242
+Free’s behavior is much more similar to that of ChatGPT-3 (mode= 40,min= 30,max= 70,µ= 47.3,σ= 16.8,p= 0.905).243
+Different context also has an effect on ChatGPT’s decision. When asked to explicitly explain the decision, ChatGPT-4244
+presents a slight variance in its decision (σ= 2.6).A similar variance is also observed when ChatGPT-4 is asked to play245
+different roles: as a mathematician or an investment fund manager, it occasionally proposes a smaller split to the responder,246
+and as a journalist, it occasionally proposes a greater split to the responder (max= 100,σ= 9.5).None of these variations is247
+statistically significant. The impact of roles to ChatGPT-3 is greater: the median of proposal decreases as a mathematician,248
+centralizes as a public relation specialist, and increases as an investment fund manager.249
+When ChatGPT is asked to play the responder, it is asked the lowest amount that it is willing to accept. ChatGPT-3’s250
+response still follows a bell-shaped distribution, with a mode of $30 (µ= 32.5,σ= 14.7),a minimum of $1, and a maximum of251
+$50. The mode, mean, min, and max are all lower than the statistics when it plays the proposer. A similar pattern is observed252
+from ChatGPT Free (µ= 30,σ= 11.9,p= 0.400).253
+ChatGPT-4 presents a significantly different behavior, where the decisions follow a two-mode distribution that concentrates254
+on two sides ($1 and $50). Requiring explanation does not change the two modes and only affects the distribution of the255
+middle range. ChatGPT Plus presents an even more extreme trait, and in a dominating majority of sessions, it is willing to256
+accept as low as $1 as the responder (p≪0.001).The choice of $1 aligns well with the rational decision of the game. Indeed,257
+some keywords that stand out from the responses include nothing, better (than), and something.258
+The context of different occupations also affects ChatGPT’s decision in this game. As a mathematician, ChatGPT-4’s259
+decision concentrates on the rational choice ($1, p≪0.001);as a public relation specialist, a journalist, an investment fund260
+manager, or a legislator, its decision becomes less bipolarated, and the median shifts towards the right (favoring fairness more261
+than rationality), although not statistically significant (Fig. S6c). Similar shifts are observed for ChatGPT-3 when inquired in262
+the context of corresponding occupations.263
+The above experiment queries ChatGPT in independent sessions, so its response to one question is not interfered by its264
+decision or memory about the other question. An interesting question is whether their exposure/response to one question265
+(corresponding to one role as proposer or responder) affects their decision for a follow-up question that corresponds to the266
+other role. We expose ChatGPT to both roles in the same session, asking it to respond to one question and then respond to267
+the other question. We find that being exposed to one scenario does influence ChatGPT-3’s and ChatGPT-4’s responses in the268
+other scenario, compared with the results obtained from independent sessions. Having been the proposer first (Fig. S7b), the269
+distribution of ChatGPT-3’s response as the responder becomes narrower, with the $50 group shifting left towards $40. A270
+similar shift presents in ChatGPT-4’s response, where the $50 group moves towards $20 and the median has reduced to $15271
+(p≪0.001).Having been the responder first (Fig. S7a), ChatGPT-3’s response as the proposer also becomes more generous,272
+while ChatGPT-4’s unanimous decision is not affected.273
+D. The Trust Game. The Trust Game is a two-player game that investigates trust and reciprocity. In this game, the first player274
+(the investor– the trustor) is given a sum of money and can invest any amount in the second player (the banker– the trustee).275
+The amount sent is multiplied by the game host, and the banker then decides how much, if any, to return to the investor. This276
+game is used to study trust, reciprocity, and social norms (14).277
+In the game, ChatGPT is also asked to play one of two roles: as an investor or as a banker. As an investor, it is asked278
+to decide how much (from $0 to $100) to invest in the banker (which is expected to generate a profit), who may return the279
+entire revenue or nothing to the investor. ChatGPT-3’s decision follows a distribution that peaks at a moderate value of280
+$30 (min= 20,max= 60,µ= 36.3,σ= 12.7).When explicitly asked to explain the decision, its decision does not present a281
+significant shift but shows a wider spread (min= 20,max= 100,σ= 16.0,p= 0.439).Different occupation roles also show an282
+effect, where ChatGPT-3 makes a larger investment as a mathematician, a public relation specialist, or a journalist.283
+ChatGPT-4 acts as if it has significantly more trust in the banker (p= 0.006).Its decision follows a distribution peaked284
+at investing half ($50) of the endowment, which also appears to be the maximum investment it makes. It tends to invest285
+slightly more when specifically required to provide an explanation. The distributions are also mildly affected by the assumed286
+occupations, whereas for a mathematician or an investment fund manager, the distribution is more spread-out, and it even287
+occasionally invests the entire endowment. The difference is not significant except for being a public relation specialist288
+(p= 0.05).289
+ChatGPT Plus invests less than ChatGPT-3, with a distribution peaked at $10 (min= 0,max= 100,µ= 19.6,σ=290
+23.0,p≪0.001).The keywords standing out from the responses include risk, return, desires, losing, minimizes, guarantee, and291
+control. Once again, ChatGPT Free’s decision distribution is more similar to that of ChatGPT-3 (mode= 30,min= 10,max=292
+60,µ= 36.7,σ= 12.1,p= 0.792).293
+In the second scenario, ChatGPT is asked to play the banker and decides what proportion of the total revenue is returned294
+to the investor, which could range all the way from nothing ($0) to the entire revenue (original investment + 2x profit). We295
+find that the two common strategies that ChatGPT-4 uses are to return 1) the original investment plus half of the profit, or 2)296
+half of the revenue. The former returns more to the investor than the latter. For ChatGPT-4, the former is more frequently297
+used, and requiring the explanation makes this strategy even more dominating. Among the assumed occupations, ChatGPT-4298
+returns more generously to the investor as a public relation specialist or an investment fund manager.299
+When the size of the investment increases, there is a shift in ChatGPT-4’s decision. When the investment was $100 (out of300
+$100), the second and less generous strategy (returning half revenue) becomes the new dominant (Fig. S6e).301
+ChatGPT-3’s decision centers on the first strategy, with small probabilities of giving more generous (even the entire revenue)302
+returns. This strategy is robust to the size of the investment. When the investment was $10, $50, and $100, ChatGPT-3’s303
+decision follows a distribution peaked at $20 (µ= 22.5,σ= 4.3),$100 (µ= 112.5,σ= 27.5),and $200 (µ= 239.2,σ= 40.7)304
+(Fig. S6f). Requesting an explanation makes the distribution even more centralized, but the extremely generous behavior305
+(returning the whole revenue to the investor) does not vanish. Being a public relation specialist, a journalist, or an investment306
+fund manager, ChatGPT-3 tends to pay back more generously than in the default role.307
+Being exposed to a different role influences ChatGPT’s decision in the other role. When inquired about both scenarios308
+(investor and banker) in the same session, ChatGPT’s responses for the second role deviate from the distribution observed in309
+the independent sessions. In particular, after playing the role of the banker, both ChatGPT-3’s and ChatGPT-4’s investments310
+increased. After playing the role of the investor, both ChatGPT-3’s and ChatGPT-4’s decisions as the banker become more311
+generous.312
+E. The Bomb Risk Game. In the Bomb Risk Game, a player decides how many out of 100 boxes to collect, one of which contains313
+a ‘bomb.’ Earnings increase linearly with the number of boxes a player decides to open, but drop to zero if the ‘bomb’ is hit.314
+The game is designed to measure risk attitudes (15).315
+In this game, ChatGPT is asked to open a number of boxes out of 100, among which a bomb is randomly placed. If the box316
+that contains the bomb is not opened, then the player earns points that equal the number of boxes they open. If the box that317
+contains the bomb is opened, the bomb explodes and the player gets zero points. In every new round, a new set of 100 boxes is318
+provided and the bomb is placed at random. Opening 50 boxes is where the expectation of points gain is maximized, and the319
+decision at each round should be independent of the decisions/results in previous rounds.320
+When first exposed to the game, both ChatGPT-3’s and ChatGPT-4’s decisions peak at opening 50 boxes (ChatGPT-3:321
+µ= 39.8,σ= 16.3,ChatGPT-4: µ= 57.6,σ= 17.4),demonstrating a rational and risk neural pattern of behavior. Despite322
+the mode, the distribution of ChatGPT-4 is significantly more risk-loving than that of ChatGPT-3 (p<0.001),with 13.8
+of the chance of opening a maximum number (99) of boxes. When playing the game for multiple rounds, its decision in the324
+following round is influenced by the outcome of the previous rounds. As long as the bomb does not explode in the previous325
+round, ChatGPT-3’s decision in the second round becomes even more concentrated on 50 boxes (µ= 48.8,σ= 7.7).When the326
+bomb does explode in the first round, ChatGPT-3 tends to be more conservative in the second round, with a new mode of327
+opening 25 boxes (µ= 26.4,σ= 10.8).If the bomb explodes again in the second round, it decides to open even fewer boxes328
+(mode= 10,µ= 14.8,σ= 11.0)in the third round. If the bomb exploded in the second round but not in the first round, the329
+average number of boxes opened in the third round drops from 50 to 43.1 even though the mode is still 50 (mode= 50,σ= 25.0).330
+F. Public Goods. In the Public Goods game, each participant is given an initial endowment and can contribute any portion to331
+a public good project. The total amount raised for the project is then multiplied by a factor and distributed equally among all332
+participants, regardless of their individual contributions. This setup allows for the exploration of altruistic contributions, the333
+free-rider problem, and social dilemmas (16).334
+In the game, ChatGPT is asked to decide how much money from 0-$20 to contribute to a public project as one of four335
+participants, the personal payoff of which is the sum of the amount not invested and 50% of the group contribution. It therefore336
+makes a profit when the contribution from the rest of the group is greater than its contribution. It is the most common for337
+both ChatGPT-3 and ChatGPT-4 to invest half of the endowment into the public goods project. When ChatGPT-3 receives a338
+greater payoff than the original endowment, it tends to increase its contribution in the next rounds despite whether the other339
+players made a larger or smaller contribution (or received a higher payoff). ChatGPT-4 on the other hand, makes a consistent340
+contribution in most sessions despite the contribution of other players. In sessions where its contributions do increase over341
+rounds, the increases tend to be smaller than those of ChatGPT-3.342
+G. Prisoner’s Dilemma. The Prisoner’s Dilemma is a fundamental game in game theory and behavioral economics, illustrating343
+the tension between individual and collective rationality. The game highlights that individuals, acting in their own self-interest,344
+can end up with worse outcomes than if they had cooperated (17–20).345
+In our version from MobLab, the framing is as follows. Two players are separately deciding whether to play the ‘push’346
+(cooperate) or ‘pull’ (defect) card. If both push, they collectively earn a higher payoff; if one pulls and the other pushes, the347
+defector gets all the payoff; if both pull, they both receive less payment. The payoff matrix is displayed in Table S3.348
+Table S3. Payoff matrix of the Prisoner’s Dilemma game. The first numbers in cells are the payoffs of Player A, and the second numbers are the payoffs of Player B.
+Player B Push Pull
+Player A Push $400, $400 $0, $700 Pull $700, $0 $300, $300
+In the five-round game (Fig. S8, for the first round, ChatGPT attempts to cooperate with the other player in a majority349
+of the sessions (21/30 for ChatGPT-3, and 29/30 for ChatGPT-4). When the other player chooses to defect, however, the350
+majority of its decisions in the next round quickly turn into “Pull” (defect), consistent with the ‘tit for tat’ pattern. Such a351
+“punishing” strategy does not last if the other player continues to play “Pull.” Instead, the ratio of “Push” bounces back to352
+25/30 for ChatGPT-4 and 14/30 for ChatGPT-3, once again trying to incentivize the other player to coordinate.353
+When the other player plays two “Push” cards (chooses to cooperate) in a row in the third and fourth rounds, both ChatGPT-354
+3’s and ChatGPT-4’s decisions become relatively stable and end up cooperating in 14/30 of the instances (ChatGPT-3) and355
+25/30 of the instances (ChatGPT-4) after all five rounds.356
+References357
+1. Goldberg LR (1993) The structure of phenotypic personality traits. American psychologist 48(1):26.358
+2. McCrae RR, Costa Jr PT (1997) Personality trait structure as a human universal. American psychologist 52(5):509.359
+3. Roccas S, Sagiv L, Schwartz SH, Knafo A (2002) The big five personality factors and personal values. Personality and360
+social psychology bulletin 28(6):789–801.361
+4. McCrae RR, Costa Jr PT (2008) The five-factor theory of personality. Theoretical Perspectives.362
+ https://lh3.googleusercontent.com/notebooklm/AKXwDQEx87NY6CFoHp7Ikpz0MdymQiK6xcUt5-HI9_qwh4N8BiEsOH-u44YePWAm2l_j8qX1hfOXLnThyPLdaRRNjJ8USlWNlU8uT9ZlNHYARoM_NXUjYF7bUh9t-3uTbcmMZr1GYJ0Aeg=w1208-h806-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQFyxzqXtUJ6lVKyT6HJx-_zk1IpwDUXMbQzk_VDe709WbFo9ngaZoFImLp6BleTJh4yQzvhtIjkLbxfdutE4MSzgcZOYxtOH7mJWP7V5NgRzBvY06BYnvcjI6ycnBvYGTsVssEJcw=w1198-h818-v0
+ChatGPT-4 ChatGPT-3
+Fig. S8. Five-round Prisoner’s Dilemma Game. A large proportion of AI decisions switch from cooperation to defection if the other player defects in the first round. However, a significant portion reverts back to cooperation in the third round even if the other player continues to defect. The proportion of cooperation becomes relatively stable in the following rounds. We executed 5 rounds in total. Partner actions in each round (1-4) are observed after the player’s action and recorded below each panel.
+5. Goldberg LR (1992) The development of markers for the big-five factor structure. Psychological assessment 4(1):26.363
+6. Eloundou T, Manning S, Mishkin P, Rock D (2023) Gpts are gpts: An early look at the labor market impact potential of364
+large language models. arXiv preprint arXiv:2303.10130.365
+7. Lin PH, et al. (2020) Evidence of general economic principles of bargaining and trade from 2,000 classroom experiments.366
+Nature Human Behaviour 4(9):917–927.367
+8. OpenAI (2023) Gpt-4 technical report.368
+9. Ouyang L, et al. (2022) Training language models to follow instructions with human feedback. Advances in Neural369
+Information Processing Systems 35:27730–27744.370
+10. McFadden D (1963) Constant elasticity of substitution production functions. The Review of Economic Studies 30(2):73–83.371
+11. McFadden D, , et al. (1973) Conditional logit analysis of qualitative choice behavior. Frontiers in Econometrics.372
+12. Güth W, Schmittberger R, Schwarze B (1982) An experimental analysis of ultimatum bargaining. Journal of economic373
+behavior & organization 3(4):367–388.374
+13. Forsythe R, Horowitz JL, Savin NE, Sefton M (1994) Fairness in simple bargaining experiments. Games and Economic375
+behavior 6(3):347–369.376
+14. Berg J, Dickhaut J, McCabe K (1995) Trust, reciprocity, and social history. Games and economic behavior 10(1):122–142.377
+15. Crosetto P, Filippin A (2013) The “bomb” risk elicitation task. Journal of risk and uncertainty 47:31–65.378
+16. Andreoni J (1995) Cooperation in public-goods experiments: kindness or confusion? The American Economic Review pp.379
+891–904.380
+17. Von Neumann J, Morgenstern O (1947) Theory of games and economic behavior, 2nd rev. (Princeton university press).381
+18. Schelling TC (1958) The strategy of conflict. prospectus for a reorientation of game theory. Journal of Conflict Resolution382
+2(3):203–264.383
+19. Rapoport A, Chammah AM (1965) Prisoner’s dilemma: A study in conflict and cooperation. (University of Michigan384
+press) Vol. 165.385
+20. Andreoni J, Varian H (1999) Preplay contracting in the prisoners’ dilemma. Proceedings of the National Academy of386
+Sciences 96(19):10933–10938.387
