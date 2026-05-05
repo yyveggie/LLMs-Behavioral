@@ -71,23 +71,6 @@ export MY_PROVIDER_API_KEY="你的 API Key"
 python scripts/run_configured_experiments.py --config configs/run_config.yaml --llm my_provider --experiment dictator
 ```
 
-### 1.4 使用正确的 Python 环境
-
-请确认当前命令使用的是已经安装项目依赖的 Python 环境。如果出现 `ModuleNotFoundError: No module named 'openai'`，通常说明当前 Python 环境没有安装所需依赖，或没有正确激活 conda/venv 环境。
-
-运行命令示例：
-
-```bash
-python scripts/run_configured_experiments.py --config configs/run_config.yaml --experiment dictator
-```
-
-你可以用下面的命令检查当前 Python 路径：
-
-```bash
-which python
-python -m pip show openai
-```
-
 ## 2. 按配置运行所有启用实验
 
 运行 `configs/run_config.yaml` 中所有 `enabled: true` 的实验：
